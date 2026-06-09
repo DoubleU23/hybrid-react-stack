@@ -7,15 +7,10 @@ import TsTestComponent from '../../components/TsTestComponent/TsTestComponent'
 
 function Home() {
   return (
-    <div className="Home">
-      <header className="Home-header">
-        <img src={logo} className="Home-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
+    <div id="home-wrapper">
+        <img src={logo} className="home-logo" alt="logo" />
         <JsTestComponent />
-        <TsTestComponent content='TsTestComponentOverwite' />
-      </header>
+        <TsTestComponent content='TsTestComponentContentOverwite' />
     </div>
   );
 }

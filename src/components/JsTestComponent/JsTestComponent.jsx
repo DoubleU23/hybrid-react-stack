@@ -4,7 +4,7 @@ interface Props {
   content: string
 }
 const JsTestComponent = (props) => {
-  return (<div>{props.content ?? 'JSTESTCOMPONENT'}</div>)
+  return (<div>{props.content ?? 'JsTestComponentDefaultContent'}</div>)
 }
 
 export default JsTestComponent
