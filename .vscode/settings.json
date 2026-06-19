@@ -1,0 +1,53 @@
+{
+  "js/ts.format.enabled": true,
+  "js/ts.validate.enabled": true,
+  // use biome as default formatter (scss, json, md, yml, ...)
+  "editor.defaultFormatter": "biomejs.biome",
+  // use ESLINT for these file types
+  "biome.enabled": true,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.biome": "explicit",
+    "source.organizeImports.biome": "explicit"
+  },
+  "js/ts.tsdk.path": "node_modules\\typescript\\lib",
+  "files.autoSave": "afterDelay",
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.vscode": true,
+    "**/build": true
+  },
+  "git.autofetch": true,
+  "js/ts.implementationsCodeLens.enabled": true,
+  "editor.trimAutoWhitespace": true,
+  "files.encoding": "utf8",
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "[javascript]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.biome": "explicit"
+    }
+  },
+  "[javascriptreact]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.biome": "explicit"
+    }
+  },
+  "[typescript]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.biome": "explicit"
+    }
+  },
+  "[typescriptreact]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.biome": "explicit"
+    }
+  },
+  "css.validate": false,
+  "editor.quickSuggestions": {
+    "strings": true
+  }
+}
