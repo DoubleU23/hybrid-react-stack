@@ -73,15 +73,6 @@
     "build": "npx cross-env NODE_ENV=production node scripts/build.js",
     "test": "npx cross-env NODE_ENV=development node scripts/test.js"
   },
-  "eslintConfig": {
-    "env": {
-      "NODE_ENV": "development"
-    },
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
