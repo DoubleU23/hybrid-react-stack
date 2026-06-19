@@ -19,6 +19,9 @@
     "enabled": true,
     "rules": {
       "preset": "recommended",
+      "suspicious": {
+        "noExplicitAny": "warn"
+      },
       "complexity": {
         "useArrayFind": "on",
         "noUselessEmptyExport": "on",
@@ -35,7 +38,7 @@
         "noSelfAssign": "error",
         "noUndeclaredDependencies": "warn",
         "noUndeclaredVariables": "error",
-        "noUnusedImports": "warn",
+        "noUnusedImports": "error",
         "noUnusedVariables": "warn",
         "useJsxKeyInIterable": "warn",
         "useValidTypeof": "error"
