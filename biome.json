@@ -10,17 +10,54 @@
   },
   "formatter": {
     "enabled": true,
-    "indentStyle": "space"
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 120
   },
   "linter": {
     "enabled": true,
     "rules": {
-      "preset": "recommended"
+      "preset": "recommended",
+      "complexity": {
+        "useArrayFind": "on",
+        "noUselessEmptyExport": "on",
+        "noUselessLoneBlockStatements": "on",
+        "noUselessReturn": "on",
+        "noUselessStringConcat": "on",
+        "useArrowFunction": "on"
+      },
+      "correctness": {
+        "noConstAssign": "error",
+        "noInnerDeclarations": "warn",
+        "noInvalidConstructorSuper": "on",
+        "noReactPropAssignments": "warn",
+        "noSelfAssign": "error",
+        "noUndeclaredDependencies": "warn",
+        "noUndeclaredVariables": "error",
+        "noUnusedImports": "warn",
+        "noUnusedVariables": "warn",
+        "useJsxKeyInIterable": "warn",
+        "useValidTypeof": "error"
+      }
     }
   },
   "javascript": {
     "formatter": {
-      "quoteStyle": "single"
+      "jsxQuoteStyle": "single",
+      "quoteStyle": "single",
+      "quoteProperties": "asNeeded",
+      "trailingCommas": "all",
+      "semicolons": "asNeeded",
+      "arrowParentheses": "asNeeded",
+      "bracketSpacing": true,
+      "bracketSameLine": false,
+      "attributePosition": "auto"
+    }
+  },
+  "json": {
+    "formatter": {
+      "trailingCommas": "none"
     }
   },
   "assist": {
