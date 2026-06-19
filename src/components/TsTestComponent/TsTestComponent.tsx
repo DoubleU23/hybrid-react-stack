@@ -1,7 +1,5 @@
-import React, { PureComponent } from 'react'
-
 interface Props {
-  content?: string;
+  content?: string
 }
 
 const TsTestComponent = (props: Props): any => {
@@ -11,4 +9,3 @@ const TsTestComponent = (props: Props): any => {
 // TsTestComponent({ content: 'test' })
 
 export default TsTestComponent
-

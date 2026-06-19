@@ -1,15 +1,14 @@
-import App from "./App";
-import NotFound from "./NotFound/NotFound";
-import Home from "./Home/Home";
+import App from './App'
+import Home from './Home/Home'
+import NotFound from './NotFound/NotFound'
 
 const AppRoutes = [
   {
     Component: App,
     children: [
       { path: '/', name: 'home', index: true, Component: Home },
-      { path: '*', Component: NotFound}
-    ]
-
+      { path: '*', Component: NotFound },
+    ],
   },
 ]
 

@@ -1,3 +1,3 @@
-import JsTestComponent from "./JsTestComponent.jsx";
+import JsTestComponent from './JsTestComponent.jsx'
 
 export default JsTestComponent
