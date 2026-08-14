@@ -40,6 +40,7 @@ dotenvFiles.forEach(dotenvFile => {
   }
 });
 
+
 // We support resolving modules according to `NODE_PATH`.
 // This lets you use absolute paths in imports inside large monorepos:
 // https://github.com/facebook/create-react-app/issues/253.
@@ -69,6 +70,7 @@ function getClientEnvironment(publicUrl) {
         return env;
       },
       {
+        PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.PUBLIC_CLERK_PUBLISHABLE_KEY,
         // Useful for determining whether we’re running in production mode.
         // Most importantly, it switches React into the correct mode.
         NODE_ENV: process.env.NODE_ENV || 'development',
