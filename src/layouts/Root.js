@@ -33,30 +33,7 @@ function App() {
       routerPush={(to) => navigate(to)}
       routerReplace={(to) => navigate(to, { replace: true })}
     >
-      <div id='app-wrapper'>
-        <header className='app-header'>
-          <p>Header</p>
-          <nav>
-            {AppRoutes[0].children.map(({ name, path }) => (
-              <NavLink key={`NavLinkTo${name}`} to={path} className={({ isActive }) => (isActive ? ' active' : '')}>
-                {name?.toUpperCase()}
-              </NavLink>
-            ))}
-            <NavLink key={'NavLinkToABC'} to={'abc'} className={({ isActive }) => (isActive ? ' active' : '')}>
-              {'ABC'}
-            </NavLink>
-          </nav>
-
-          {/* Core 3 Standard: Bedingtes Rendern über die "when"-Prop von <Show> */}
-          <Show when="signed-out">
-            <SignInButton />
-            <SignUpButton />
-          </Show>
-
-          <Show when="signed-in">
-            <UserButton />
-          </Show>
-        </header>
+      <div id='root-wrapper'>
         <Outlet />
       </div>
     </ClerkProvider>
