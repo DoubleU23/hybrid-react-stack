@@ -7,19 +7,18 @@ import {
   UserButton
 } from '@clerk/react';
 
+
 export default function AppHeader(params) {
+    const AppLayoutRoutes = AppRoutes[0].children[0]
     return (
     <header className='app-header'>
         <p>Header</p>
         <nav>
-        {AppRoutes[0].children.map(({ name, path }) => (
+        {AppLayoutRoutes.children.map(({ name, path }) => (
             <NavLink key={`NavLinkTo${name}`} to={path} className={({ isActive }) => (isActive ? ' active' : '')}>
             {name?.toUpperCase()}
             </NavLink>
         ))}
-        <NavLink key={'NavLinkToABC'} to={'abc'} className={({ isActive }) => (isActive ? ' active' : '')}>
-            {'ABC'}
-        </NavLink>
         </nav>
 
         {/* Core 3 Standard: Bedingtes Rendern über die "when"-Prop von <Show> */}

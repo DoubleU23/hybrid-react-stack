@@ -8,10 +8,10 @@ const AppRoutes = [
   {
     Component: Root,
     children: [
-     {path: '/', Component: App, children:
-      [
-        { index: true, Component: Home },
-        {path: '/*', Component: NotFound}
+     {path: '/', Component: App,
+      children: [
+        {name: 'Home', path: '/', index: true, Component: Home },
+        {name: 'NotFound', path: '/*', Component: NotFound}
       ]
      }
     ],
