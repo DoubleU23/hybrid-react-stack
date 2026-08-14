@@ -1,9 +1,6 @@
 import { NavLink, Outlet } from 'react-router'
-import AppRoutes from '../../routes'
-import './App.css'
-
-
 import { useNavigate } from 'react-router-dom';
+import './App.css'
 
 import {
   ClerkProvider,

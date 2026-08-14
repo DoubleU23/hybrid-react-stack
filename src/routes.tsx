@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import Root from './Root'
+import Root from './layouts/Root'
 import App from './layouts/App/App'
 import Home from './pages/Home/Home'
 import NotFound from './pages/NotFound/NotFound'

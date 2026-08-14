@@ -1,6 +1,6 @@
 import { NavLink, Outlet } from 'react-router'
-import AppRoutes from './routes'
-import './pages/App.css'
+import AppRoutes from '../routes'
+import './Root.css'
 
 import { useNavigate } from 'react-router-dom';
 
