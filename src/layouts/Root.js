@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from 'react-router'
+import { Outlet } from 'react-router'
 import AppRoutes from '../routes'
 import './Root.css'
 
