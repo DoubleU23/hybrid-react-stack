@@ -7,24 +7,54 @@
   color: white;
 }
 
-.app-header {
+#appHeader {
   display: block;
   padding-inline: 0 20px;
   min-height: 50px;
   background-color: #61dafb;
+  padding: 10px 10px 0 0;
 }
-.app-header p {
+#appHeader p {
   display: inline;
   margin: 0;
   padding: 0 10px;
 }
-
-nav {
-  /* float: left; */
+#logo {
+  float:left;
   display: inline-block;
-  padding: 0 10%;
+  position: relative;
+  left:0;
+}
+nav {
+  padding: 0 5% 0 10%;
+  width: stretch;
 }
 nav a {
   display: inline-block;
   padding: 0 10px;
+}
+#userNav {
+  position: relative;
+  right: 0;
+  float:right;
+}
+
+#app-wrapper input.cl-input, input:-internal-autofill-selected  {
+  background-color: rgb(38, 38, 43) !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+input:-webkit-autofill-selected {
+  background-color: (rgb(118, 118, 118), rgb(133, 133, 133)) !important;
+  /* 1. Paint a huge dark shadow inside the input to hide the white background */
+  -webkit-box-shadow: 0 0 0 1000px #1e1e24 inset !important;
+
+  /* 2. Force the text color to stay white */
+  -webkit-text-fill-color: #ffffff !important;
+  transition-property: background-color, background, border-color, color, fill, stroke, opacity, box-shadow, transform;
+    transition-timing-function: ease;
+    transition-duration: 200ms;
 }

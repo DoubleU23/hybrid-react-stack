@@ -1,35 +1,43 @@
+// import AppRoutes from "../../routes"
+import { Show, SignInButton, SignUpButton, UserButton } from '@clerk/react'
 import { NavLink } from 'react-router'
-import AppRoutes from "../../routes"
-import {
-  Show,
-  SignInButton,
-  SignUpButton,
-  UserButton
-} from '@clerk/react';
 
+// {AppLayoutRoutes.children.map(({ name, path }) => (
+//     <NavLink key={`NavLinkTo${name}`} to={path} className={({ isActive }) => (isActive ? ' active' : '')}>
+//     {name?.toUpperCase()}
+//     </NavLink>
+// ))}
 
 export default function AppHeader(params) {
-    const AppLayoutRoutes = AppRoutes[0].children[0]
-    return (
-    <header className='app-header'>
-        <p>Header</p>
-        <nav>
-        {AppLayoutRoutes.children.map(({ name, path }) => (
-            <NavLink key={`NavLinkTo${name}`} to={path} className={({ isActive }) => (isActive ? ' active' : '')}>
-            {name?.toUpperCase()}
-            </NavLink>
-        ))}
-        </nav>
-
-        {/* Core 3 Standard: Bedingtes Rendern über die "when"-Prop von <Show> */}
-        <Show when="signed-out">
-        <SignInButton />
-        <SignUpButton />
-        </Show>
-
-        <Show when="signed-in">
-        <UserButton />
-        </Show>
+  // const AppLayoutRoutes = AppRoutes[0].children[0]
+  return (
+    <header id='appHeader'>
+      <div id="logo">Header</div>
+      <nav>
+        <NavLink to='/' end className={({ isActive }) => (isActive ? ' active' : '')}>
+          HOME
+        </NavLink>
+        <NavLink to='/abc' className={({ isActive }) => (isActive ? ' active' : '')}>
+          ABC
+        </NavLink>
+        <div id='userNav'>
+          <Show
+            fallback={
+              <div>
+                <NavLink to='/login' className={({ isActive }) => (isActive ? ' active' : '')}>
+                  LOGIN
+                </NavLink>
+                <NavLink to='/register' className={({ isActive }) => (isActive ? ' active' : '')}>
+                  Register
+                </NavLink>
+              </div>
+            }
+            when='signed-in'
+          >
+            <UserButton userProfileMode='navigation' and userProfileUrl='/profile'/>
+          </Show>
+        </div>
+      </nav>
     </header>
-    )
+  )
 }

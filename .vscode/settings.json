@@ -2,7 +2,7 @@
   "js/ts.format.enabled": true,
   "js/ts.validate.enabled": true,
   // use biome as default formatter (scss, json, md, yml, ...)
-  "editor.defaultFormatter": "biomejs.biome",
+"editor.defaultFormatter": "biomejs.biome",
   // use ESLINT for these file types
   "biome.enabled": true,
   "editor.formatOnSave": true,
@@ -49,5 +49,6 @@
   "css.validate": false,
   "editor.quickSuggestions": {
     "strings": true
-  }
+  },
+  "compilets.autoStart": false
 }
