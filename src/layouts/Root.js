@@ -1,8 +1,9 @@
 import { Outlet } from 'react-router'
 import AppRoutes from '../routes'
 import './Root.css'
-
+import {dark} from '@clerk/ui/themes'
 import { useNavigate } from 'react-router-dom';
+
 
 // In Core 3 importieren wir alles aus '@clerk/react'
 import {
@@ -12,7 +13,7 @@ import {
   SignUpButton,
   UserButton
 } from '@clerk/react';
-
+// import { ClerkProvider } from '@clerk/react-router';
 const CLERK_KEY = process.env.PUBLIC_CLERK_PUBLISHABLE_KEY;
 
 if (!CLERK_KEY) {
@@ -24,20 +25,24 @@ if (!CLERK_KEY) {
     path: string
 } */
 
-function App() {
+function Root() {
   const navigate = useNavigate();
 
   return (
-    <ClerkProvider
-      publishableKey={CLERK_KEY}
-      routerPush={(to) => navigate(to)}
-      routerReplace={(to) => navigate(to, { replace: true })}
-    >
-      <div id='root-wrapper'>
+    <div id='root-wrapper'>
+        <ClerkProvider
+          appearance={{
+            baseTheme: dark,  
+            theme: dark,
+          }}
+          publishableKey={CLERK_KEY}
+          routerPush={(to) => navigate(to)}
+          routerReplace={(to) => navigate(to, { replace: true })}
+        >
         <Outlet />
+        </ClerkProvider>
       </div>
-    </ClerkProvider>
   )
 }
 
-export default App;
+export default Root;

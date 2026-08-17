@@ -6,6 +6,8 @@
     "@babel/core": "^7.16.0",
     "@clerk/clerk-react": "^5.61.9",
     "@clerk/react": "^6.14.2",
+    "@clerk/react-router": "^3.6.10",
+    "@clerk/ui": "^1.30.3",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@svgr/webpack": "^5.5.0",
     "@testing-library/dom": "^10.4.1",
@@ -68,6 +70,7 @@
     "workbox-webpack-plugin": "^6.4.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.5.8",
     "cross-env": "^10.1.0"
   },
   "scripts": {
