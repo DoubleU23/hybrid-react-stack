@@ -14,7 +14,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
+    "paths": {
+      "@convex/api": ["./convex/_generated/api.js"],
+      "@convex/server": ["./convex/_generated/server.js"]
+    }
   },
   "include": ["src"]
 }
