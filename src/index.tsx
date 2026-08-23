@@ -3,14 +3,14 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import { createBrowserRouter } from 'react-router'
 import { RouterProvider } from 'react-router-dom'
-import AppRoutes from './routes'
 import reportWebVitals from './reportWebVitals'
+import AppRoutes from './routes'
 
 const router = createBrowserRouter(AppRoutes)
 
 createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-      <RouterProvider router={router} />
+    <RouterProvider router={router} />
   </React.StrictMode>,
 )
 

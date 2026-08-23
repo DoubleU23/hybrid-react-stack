@@ -5,10 +5,12 @@ import './App.css'
 
 function App() {
   return (
-    <div id='app-wrapper'>
+    <>
       <AppHeader />
+    <div id='app-wrapper'>
       <Outlet />
     </div>
+    </>
   )
 }
 

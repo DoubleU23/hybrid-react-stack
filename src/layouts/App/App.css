@@ -1,42 +1,31 @@
-#app-wrapper {
+#root-wrapper {
   background-color: #282c34;
   min-height: 100vh;
+}
+#app-wrapper {
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  margin: 0;
 }
-
-#appHeader {
+/* #appHeader {
   display: block;
   padding-inline: 0 20px;
   min-height: 50px;
   background-color: #61dafb;
   padding: 10px 10px 0 0;
+} */
+ #app-wrapper > div {
+   margin: 20px 10px 0 20px;
+ }
+#app-wrapper p {
+  display: inline !important;
 }
-#appHeader p {
-  display: inline;
-  margin: 0;
-  padding: 0 10px;
-}
-#logo {
-  float:left;
-  display: inline-block;
-  position: relative;
-  left:0;
-}
-nav {
-  padding: 0 5% 0 10%;
-  width: stretch;
-}
-nav a {
-  display: inline-block;
-  padding: 0 10px;
-}
-#userNav {
-  position: relative;
-  right: 0;
-  float:right;
+
+#appHeader a, #menu-appbar a {
+  color: white !important;
+  text-decoration: none;
 }
 
 #app-wrapper input.cl-input, input:-internal-autofill-selected  {
