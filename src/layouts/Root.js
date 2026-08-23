@@ -4,11 +4,16 @@ import './Root.css'
 // In Core 3 importieren wir alles aus '@clerk/react'
 import { ClerkProvider, useAuth } from '@clerk/react'
 import { dark } from '@clerk/ui/themes'
+import { ThemeProvider } from '@mui/material/styles'
 import { ConvexReactClient } from 'convex/react'
 import { ConvexProviderWithClerk } from 'convex/react-clerk'
 import { useNavigate } from 'react-router-dom'
+import muiTheme from './muiTheme'
+import '@fontsource/roboto/300.css'
+import '@fontsource/roboto/400.css'
+import '@fontsource/roboto/500.css'
+import '@fontsource/roboto/700.css'
 
-// import { ClerkProvider } from '@clerk/react-router';
 const CLERK_KEY = process.env.PUBLIC_CLERK_PUBLISHABLE_KEY
 
 if (!CLERK_KEY) {
@@ -36,7 +41,9 @@ function Root() {
         routerReplace={to => navigate(to, { replace: true })}
       >
         <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
+          <ThemeProvider theme={muiTheme}>
           <Outlet />
+          </ThemeProvider>
         </ConvexProviderWithClerk>
       </ClerkProvider>
     </div>
