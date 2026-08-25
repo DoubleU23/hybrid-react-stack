@@ -1,9 +1,8 @@
 import { menuItemClasses } from '@mui/material/MenuItem'
 import { alpha } from '@mui/material/styles'
 import { pickerDayClasses, yearCalendarClasses } from '@mui/x-date-pickers'
-import { brand, gray } from '../../../shared-theme/themePrimitives'
+import { brand, gray } from '../../layouts/theme/themePrimitives'
 
-/* eslint-disable import/prefer-default-export */
 export const datePickersCustomizations = {
   MuiPickerPopper: {
     styleOverrides: {

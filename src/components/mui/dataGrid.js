@@ -10,7 +10,6 @@ import { tablePaginationClasses } from '@mui/material/TablePagination'
 import { gridClasses } from '@mui/x-data-grid'
 import { gray } from '../../layouts/theme/themePrimitives'
 
-/* eslint-disable import/prefer-default-export */
 export const dataGridCustomizations = {
   MuiDataGrid: {
     styleOverrides: {

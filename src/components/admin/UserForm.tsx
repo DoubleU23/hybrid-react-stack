@@ -35,19 +35,6 @@ export interface UserFormProps {
   backButtonPath?: string
 }
 
-const apiFetchUserByClerkId = async () => {
-  const response = await fetch('https://dynamic-stingray-365.eu-west-1.convex.site/api/getUsersPaginated', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-
-  const data = await response.json()
-  console.log(data) // Outputs: "Success!"
-  return data
-}
-
 export default function UserForm(props: UserFormProps) {
   const { formState, onFieldChange, onSubmit, onReset, submitButtonLabel, backButtonPath } = props
 

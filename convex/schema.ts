@@ -1,6 +1,8 @@
 import { defineSchema, defineTable } from 'convex/server'
 import { type Infer, v } from 'convex/values'
 
+export type UserRole = 'user' | 'admin'
+
 export const emailAddressesValidator = v.array(
   v.object({
     id: v.string(),

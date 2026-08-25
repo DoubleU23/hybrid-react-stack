@@ -4,14 +4,14 @@ import CircularProgress from '@mui/material/CircularProgress'
 import type { UserObject } from 'convex/schema'
 import * as React from 'react'
 import { useNavigate, useParams } from 'react-router'
-import PageContainer from '../../components/admin/PageContainer'
-import UserForm, { type FormFieldValue, type UserFormState } from '../../components/admin/UserForm'
 import {
   apiFetchUserByClerkId,
   apiPushUserUpdate,
   getOne as getEmployee,
   validate as validateUser,
-} from '../../data/users'
+} from '../../apiCalls/users'
+import PageContainer from '../../components/admin/PageContainer'
+import UserForm, { type FormFieldValue, type UserFormState } from '../../components/admin/UserForm'
 import useNotifications from '../../hooks/useNotifications/useNotifications'
 
 function EmployeeEditForm({

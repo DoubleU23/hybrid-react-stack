@@ -21,9 +21,9 @@ import {
 import * as React from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router'
 import type { UserObject } from '../../../convex/schema'
+import { apiFetchUsersPaginated, deleteOne as deleteEmployee } from '../../apiCalls/users' // getMany as getEmployees
 import PageContainer from '../../components/admin/PageContainer'
 import { INITIAL_PAGE_SIZE } from '../../constants'
-import { apiFetchUsersPaginated, deleteOne as deleteEmployee } from '../../data/users' // getMany as getEmployees
 import { useDialogs } from '../../hooks/useDialogs/useDialogs'
 import useNotifications from '../../hooks/useNotifications/useNotifications'
 

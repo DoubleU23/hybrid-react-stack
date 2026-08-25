@@ -1,22 +1,21 @@
 // TODO: add user.updated and doublecheck user fields needed + use UserObject interface
 
 import { v } from 'convex/values'
-import { mutation, query, httpAction } from './_generated/server'
-import { userValidator } from './schema'
 import { api } from './_generated/api'
-import type { EmailAddress, UserObject, DBResult } from './schema'
+import { httpAction, mutation, query } from './_generated/server'
+import type { DBResult, EmailAddress, UserObject } from './schema'
+import { userValidator } from './schema'
 
 export const getUsers = query({
-    args: {},
+  args: {},
   handler: async ctx => {
     // 2. Fetch using your high-performance index
-    return await ctx.db
-      .query("users")
-      .collect()
-  }})
+    return await ctx.db.query('users').collect()
+  },
+})
 
-  export const getUsersPaginated = query({
-    args: {
+export const getUsersPaginated = query({
+  args: {
     // Validate pagination requirements strictly using built-in Convex types
     paginationOpts: v.object({
       numItems: v.number(),
@@ -25,25 +24,23 @@ export const getUsers = query({
   },
   handler: async (ctx, args) => {
     // 2. Fetch using your high-performance index
-    return await ctx.db
-      .query("users")
-     .order("desc")
-      .paginate(args.paginationOpts);
-  }})
+    return await ctx.db.query('users').order('desc').paginate(args.paginationOpts)
+  },
+})
 
 export const getCurrentUser = query({
   args: {},
   handler: async ctx => {
-    const identity = await ctx.auth.getUserIdentity();
+    const identity = await ctx.auth.getUserIdentity()
     if (identity === null) {
-      return null; // Return null instead of throwing to keep frontend handling easy
+      return null // Return null instead of throwing to keep frontend handling easy
     }
     // 2. Fetch using your high-performance index
     return await ctx.db
-      .query("users")
-      .withIndex("by_clerk_user_id", (q) => q.eq("clerk_user_id", identity.subject))
+      .query('users')
+      .withIndex('by_clerk_user_id', q => q.eq('clerk_user_id', identity.subject))
       // .filter((q) => q.eq(q.field("clerk_user_id"), identity.subject))
-      .unique(); // Instantly returns the single object or null
+      .unique() // Instantly returns the single object or null
   },
 })
 
@@ -52,7 +49,7 @@ export const getUserByClerkUserId = query({
   handler: async (ctx, args) => {
     return await ctx.db
       .query('users')
-      .withIndex("by_clerk_user_id", (q) => q.eq("clerk_user_id", args.clerk_user_id))
+      .withIndex('by_clerk_user_id', q => q.eq('clerk_user_id', args.clerk_user_id))
       .collect()
   },
 })
@@ -80,14 +77,14 @@ export const updateUserByClerkId = mutation({
   handler: async (ctx, args) => {
     // 1. Safely find the user by their Clerk identifier
     const userToUpdate = await ctx.db
-     .query('users')
-     .withIndex("by_clerk_user_id", (q) => q.eq("clerk_user_id", args.user.clerk_user_id))
-     .unique()
+      .query('users')
+      .withIndex('by_clerk_user_id', q => q.eq('clerk_user_id', args.user.clerk_user_id))
+      .unique()
 
     if (!userToUpdate) {
       return { success: false, error: 'User profile not found' }
     }
-    const { _id, _creationTime, ...fieldsToPatch } = args.user;
+    const { _id, _creationTime, ...fieldsToPatch } = args.user
     await ctx.db.patch('users', userToUpdate._id, fieldsToPatch)
 
     return { success: true, msg: `User updated - ${args.user.clerk_user_id}` }
@@ -116,7 +113,9 @@ export const handleUserClerkWebhook = httpAction(async (ctx, request) => {
   const identity = await ctx.auth.getUserIdentity()
   const response = await request.json()
 
-  const { type, data: {
+  const {
+    type,
+    data: {
       id,
       username,
       created_at,
@@ -140,14 +139,13 @@ export const handleUserClerkWebhook = httpAction(async (ctx, request) => {
     },
   } = response
 
-  let primary_email_address
-    email_addresses.forEach((email: EmailAddress) => {
-      if (email.id === primary_email_address_id) primary_email_address = email.email_address
-    })
+  let primary_email_address: string = ''
+  email_addresses.forEach((email: EmailAddress) => {
+    if (email.id === primary_email_address_id) primary_email_address = email.email_address
+  })
 
-  const role = public_metadata.role || 'user';
-  if (!public_metadata.role)
-      public_metadata.role = role
+  const role = public_metadata.role || 'user'
+  if (!public_metadata.role) public_metadata.role = role
 
   let dbResult: DBResult = { success: true }
   const userObject: UserObject = {
