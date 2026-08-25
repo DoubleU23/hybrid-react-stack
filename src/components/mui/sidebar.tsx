@@ -1,9 +1,8 @@
-import { Theme, Components } from '@mui/material/styles';
-import { listSubheaderClasses } from '@mui/material/ListSubheader';
-import { listItemButtonClasses } from '@mui/material/ListItemButton';
-import { typographyClasses } from '@mui/material/Typography';
+import { listItemButtonClasses } from '@mui/material/ListItemButton'
+import { listSubheaderClasses } from '@mui/material/ListSubheader'
+import type { Components, Theme } from '@mui/material/styles'
+import { typographyClasses } from '@mui/material/Typography'
 
-/* eslint-disable import/prefer-default-export */
 export const sidebarCustomizations: Components<Theme> = {
   MuiDrawer: {
     styleOverrides: {
@@ -21,4 +20,4 @@ export const sidebarCustomizations: Components<Theme> = {
       }),
     },
   },
-};
+}

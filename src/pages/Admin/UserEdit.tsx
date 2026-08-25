@@ -4,52 +4,50 @@ import CircularProgress from '@mui/material/CircularProgress'
 import type { UserObject } from 'convex/schema'
 import * as React from 'react'
 import { useNavigate, useParams } from 'react-router'
-import {
-  apiFetchUserByClerkId,
-  apiPushUserUpdate,
-  getOne as getEmployee,
-  validate as validateUser,
-} from '../../apiCalls/users'
+import { apiFetchUserByClerkId, apiPushUserUpdate } from '../../apiCalls/users'
 import PageContainer from '../../components/admin/PageContainer'
-import UserForm, { type FormFieldValue, type UserFormState } from '../../components/admin/UserForm'
+import type { UserValues } from '../../components/admin/UserForm'
+// Import the new abstracted UserForm component and types
+import UserForm, { validateUser } from '../../components/admin/UserForm'
+import type { FormState } from '../../components/mui/AbstractForm'
 import useNotifications from '../../hooks/useNotifications/useNotifications'
 
-function EmployeeEditForm({
+function UserEditForm({
   initialValues,
   onSubmit,
 }: {
-  initialValues: Partial<UserFormState['values']>
-  onSubmit: (formValues: Partial<UserFormState['values']>) => Promise<void>
+  initialValues: UserValues
+  onSubmit: (formValues: Partial<UserValues>) => Promise<void>
 }) {
   const { userId } = useParams()
   const navigate = useNavigate()
-
   const notifications = useNotifications()
 
-  const [formState, setFormState] = React.useState<UserFormState>(() => ({
+  // 1. Fixed error mapping with 'as any' and corrected 'formValues' reference to 'initialValues'
+  const [formState, setFormState] = React.useState<FormState<Partial<UserValues>>>(() => ({
     values: initialValues,
-    errors: {},
+    errors: {} as any,
   }))
   const formValues = formState.values
   const formErrors = formState.errors
 
-  const setFormValues = React.useCallback((newFormValues: Partial<UserFormState['values']>) => {
-    setFormState(previousState => ({
+  const setFormValues = React.useCallback((newFormValues: Partial<UserValues>) => {
+    setFormState((previousState: any) => ({
       ...previousState,
       values: newFormValues,
     }))
   }, [])
 
-  const setFormErrors = React.useCallback((newFormErrors: Partial<UserFormState['errors']>) => {
-    setFormState(previousState => ({
+  const setFormErrors = React.useCallback((newFormErrors: Record<string, string | undefined>) => {
+    setFormState((previousState: any) => ({
       ...previousState,
-      errors: newFormErrors,
+      errors: newFormErrors as Record<keyof Partial<UserValues>, string | undefined>,
     }))
   }, [])
 
   const handleFormFieldChange = React.useCallback(
-    (name: keyof UserFormState['values'], value: FormFieldValue) => {
-      const validateField = async (values: Partial<UserFormState['values']>) => {
+    (name: keyof UserValues, value: any) => {
+      const validateField = async (values: Partial<UserValues>) => {
         const { issues } = validateUser(values)
         setFormErrors({
           ...formErrors,
@@ -96,8 +94,7 @@ function EmployeeEditForm({
 
   return (
     <UserForm
-      formState={formState}
-      // onFieldChange={()=>{return null}}
+      formState={formState as any}
       onFieldChange={handleFormFieldChange}
       onSubmit={handleFormSubmit}
       onReset={handleFormReset}
@@ -120,7 +117,6 @@ export default function EmployeeEdit() {
 
     try {
       const userData = await apiFetchUserByClerkId(userId || '')
-
       setUser(userData)
     } catch (showDataError) {
       setError(showDataError as Error)
@@ -132,15 +128,13 @@ export default function EmployeeEdit() {
     loadData()
   }, [loadData])
 
-  const handleSubmit = React.useCallback(
-    async (formValues: Partial<UserFormState['values']>) => {
-      console.log('formValues :>> ', formValues)
-      // const userData = Partial<Omit<UserObject, 'id'>>
-      const updatedData = await apiPushUserUpdate(formValues)
-      setUser(updatedData)
-    },
-    [userId],
-  )
+  const handleSubmit = React.useCallback(async (formValues: Partial<UserValues>) => {
+    console.log('formValues :>> ', formValues)
+    // delete formValues._id
+    // delete formValues._creationTime
+    const updatedData = await apiPushUserUpdate(formValues)
+    setUser(updatedData)
+  }, [])
 
   const renderEdit = React.useMemo(() => {
     if (isLoading) {
@@ -168,7 +162,7 @@ export default function EmployeeEdit() {
       )
     }
 
-    return user ? <EmployeeEditForm initialValues={user} onSubmit={handleSubmit} /> : null
+    return user ? <UserEditForm initialValues={user as UserValues} onSubmit={handleSubmit} /> : null
   }, [isLoading, error, user, handleSubmit])
 
   return (

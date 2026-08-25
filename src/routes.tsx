@@ -1,15 +1,13 @@
-import { Component } from 'react'
 import AdminLayout from './layouts/Admin/Admin'
-import AdminHome from './pages/Admin/AdminHome'
-import EmployeeCreate from './pages/Admin/UserCreate'
-import UserEdit from './pages/Admin/UserEdit'
-import UserList from './pages/Admin/UserList'
-import UserShow from './pages/Admin/UserShow'
 import App from './layouts/App/App'
 import Root from './layouts/Root'
 import LoginPage from './pages/Auth/Login'
 import Profile from './pages/Auth/Profile'
 import RegisterPage from './pages/Auth/Register'
+import AdminHome from './pages/admin/AdminHome'
+import UserEdit from './pages/admin/UserEdit'
+import UserList from './pages/admin/UserList'
+import UserShow from './pages/admin/UserShow'
 import Home from './pages/Home/Home'
 import NotFound from './pages/NotFound/NotFound'
 
@@ -32,7 +30,7 @@ const AppRoutes = [
         path: '/admin',
         Component: AdminLayout,
         children: [
-          { name: 'AdminHome', path: '/admin', index: true, Component: AdminHome},
+          { name: 'AdminHome', path: '/admin', index: true, Component: AdminHome },
           {
             path: '/admin/users',
             Component: UserList,
@@ -40,10 +38,6 @@ const AppRoutes = [
           {
             path: '/admin/user/:userId',
             Component: UserShow,
-          },
-          {
-            path: '/admin/employees/new',
-            Component: EmployeeCreate,
           },
           {
             path: '/admin/users/:userId/edit',

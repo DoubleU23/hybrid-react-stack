@@ -1,4 +1,6 @@
-import type {UserObject} from '../../convex/schema'
+
+import type { UserValues } from 'src/components/admin/UserForm'
+import type { UserObject } from '../../convex/schema'
 
 export const apiFetchUsersPaginated = async () => {
   const response = await fetch('https://dynamic-stingray-365.eu-west-1.convex.site/api/getUsersPaginated', {
@@ -7,8 +9,7 @@ export const apiFetchUsersPaginated = async () => {
       'Content-Type': 'application/json',
     },
   })
-
-  const responseJson = await response.json()
+ const responseJson = await response.json()
   console.log(responseJson) // Outputs: "Success!"
   return responseJson
 }
@@ -30,7 +31,7 @@ export const apiFetchUserByClerkId = async (clerkId: string) => {
   return data
 }
 
-export async function apiPushUserUpdate(userData: Partial<UserObject>) {
+export async function apiPushUserUpdate(userData: Partial<UserValues>) {
   const targetUrl = new URL('https://dynamic-stingray-365.eu-west-1.convex.site/api/pushUserUpdate')
   const response = await fetch(targetUrl, {
     method: 'POST',
@@ -181,35 +182,3 @@ export async function deleteOne(employeeId: number) {
 }
 
 // Validation follows the [Standard Schema](https://standardschema.dev/).
-
-type ValidationResult = { issues: { message: string; path: (keyof UserObject)[] }[] }
-
-export function validate(user: Partial<UserObject>): ValidationResult {
-  let issues: ValidationResult['issues'] = []
-
-  if (!user.username) {
-    issues = [...issues, { message: 'Username is required', path: ['username'] }]
-  }
-
-  if (user.first_name && user.first_name.length <= 3) {
-    issues = [...issues, { message: 'First Name must not be under 3 chars ', path: ['first_name'] }]
-  }
-
-  // if (!employee.age) {
-  //   issues = [...issues, { message: 'Age is required', path: ['age'] }];
-  // } else if (employee.age < 18) {
-  //   issues = [...issues, { message: 'Age must be at least 18', path: ['age'] }];
-  // }
-
-  if (!user.created_at) {
-    issues = [...issues, { message: 'Join date is required', path: ['created_at'] }]
-  }
-
-  if (!user.role) {
-    issues = [...issues, { message: 'Role is required', path: ['role'] }]
-  } else if (!['user', 'admin'].includes(user.role)) {
-    issues = [...issues, { message: 'Role must be "user or admin"', path: ['role'] }]
-  }
-
-  return { issues }
-}

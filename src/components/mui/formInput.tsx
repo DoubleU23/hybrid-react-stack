@@ -6,7 +6,6 @@ import { outlinedInputClasses } from '@mui/material/OutlinedInput'
 import { alpha, type Components, type Theme } from '@mui/material/styles'
 import { brand } from '../../layouts/theme/themePrimitives'
 
-/* eslint-disable import/prefer-default-export */
 export const formInputCustomizations: Components<Theme> = {
   MuiFormControl: {
     styleOverrides: {
