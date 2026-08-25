@@ -8,11 +8,12 @@ import { ThemeProvider } from '@mui/material/styles'
 import { ConvexReactClient } from 'convex/react'
 import { ConvexProviderWithClerk } from 'convex/react-clerk'
 import { useNavigate } from 'react-router-dom'
-import muiTheme from './muiTheme'
+import muiTheme from './theme/muiTheme'
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
+import CssBaseline from '@mui/material/CssBaseline'
 
 const CLERK_KEY = process.env.PUBLIC_CLERK_PUBLISHABLE_KEY
 
@@ -31,6 +32,7 @@ function Root() {
 
   return (
     <div id='root-wrapper'>
+
       <ClerkProvider
         appearance={{
           baseTheme: dark,
@@ -42,6 +44,7 @@ function Root() {
       >
         <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
           <ThemeProvider theme={muiTheme}>
+        <CssBaseline enableColorScheme />
           <Outlet />
           </ThemeProvider>
         </ConvexProviderWithClerk>

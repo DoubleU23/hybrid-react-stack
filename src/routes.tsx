@@ -1,8 +1,12 @@
 import { Component } from 'react'
-import Admin from './layouts/Admin/Admin'
+import AdminLayout from './layouts/Admin/Admin'
+import AdminHome from './pages/Admin/AdminHome'
+import EmployeeCreate from './pages/Admin/UserCreate'
+import UserEdit from './pages/Admin/UserEdit'
+import UserList from './pages/Admin/UserList'
+import UserShow from './pages/Admin/UserShow'
 import App from './layouts/App/App'
 import Root from './layouts/Root'
-import AdminHome from './pages/Admin/AdminHome'
 import LoginPage from './pages/Auth/Login'
 import Profile from './pages/Auth/Profile'
 import RegisterPage from './pages/Auth/Register'
@@ -26,8 +30,31 @@ const AppRoutes = [
       },
       {
         path: '/admin',
-        Component: Admin,
-        children: [{ name: 'Home', path: '/admin', index: true, Component: AdminHome }],
+        Component: AdminLayout,
+        children: [
+          { name: 'AdminHome', path: '/admin', index: true, Component: AdminHome},
+          {
+            path: '/admin/users',
+            Component: UserList,
+          },
+          {
+            path: '/admin/user/:userId',
+            Component: UserShow,
+          },
+          {
+            path: '/admin/employees/new',
+            Component: EmployeeCreate,
+          },
+          {
+            path: '/admin/users/:userId/edit',
+            Component: UserEdit,
+          },
+          // Fallback route for the example routes in dashboard sidebar items
+          {
+            path: '/admin/*',
+            Component: UserList,
+          },
+        ],
       },
     ],
   },

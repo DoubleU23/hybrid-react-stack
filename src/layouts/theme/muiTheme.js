@@ -1,5 +1,6 @@
 import {red} from '@mui/material/colors'
 import { createTheme } from '@mui/material/styles'
+import { dark } from '@clerk/ui/themes'
 
 const muiTheme = createTheme({
    palette: {
@@ -11,6 +12,7 @@ const muiTheme = createTheme({
   status: {
     danger: red[500],
   },
+  ...dark
 })
 
 export default muiTheme
