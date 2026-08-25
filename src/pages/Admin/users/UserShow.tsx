@@ -14,10 +14,10 @@ import type { UserObject } from 'convex/schema'
 import dayjs from 'dayjs'
 import * as React from 'react'
 import { useNavigate, useParams } from 'react-router'
-import { apiFetchUserByClerkId, deleteOne as deleteUser, getOne as getEmployee } from '../../apiCalls/users'
-import PageContainer from '../../components/admin/PageContainer'
-import { useDialogs } from '../../hooks/useDialogs/useDialogs'
-import useNotifications from '../../hooks/useNotifications/useNotifications'
+import { apiFetchUserByClerkId, deleteOne as deleteUser, getOne as getEmployee } from '../../../apiCalls/users'
+import PageContainer from '../../../components/admin/PageContainer'
+import { useDialogs } from '../../../hooks/useDialogs/useDialogs'
+import useNotifications from '../../../hooks/useNotifications/useNotifications'
 
 export default function UserShow() {
   const { userId } = useParams()

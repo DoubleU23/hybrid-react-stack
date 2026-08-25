@@ -20,12 +20,12 @@ import {
 } from '@mui/x-data-grid'
 import * as React from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router'
-import type { UserObject } from '../../../convex/schema'
-import { apiFetchUsersPaginated, deleteOne as deleteEmployee } from '../../apiCalls/users' // getMany as getEmployees
-import PageContainer from '../../components/admin/PageContainer'
-import { INITIAL_PAGE_SIZE } from '../../constants'
-import { useDialogs } from '../../hooks/useDialogs/useDialogs'
-import useNotifications from '../../hooks/useNotifications/useNotifications'
+import type { UserObject } from '../../../../convex/schema'
+import { apiFetchUsersPaginated, deleteOne as deleteEmployee } from '../../../apiCalls/users' // getMany as getEmployees
+import PageContainer from '../../../components/admin/PageContainer'
+import { INITIAL_PAGE_SIZE } from '../../../constants'
+import { useDialogs } from '../../../hooks/useDialogs/useDialogs'
+import useNotifications from '../../../hooks/useNotifications/useNotifications'
 
 export default function UserList() {
   const { pathname } = useLocation()

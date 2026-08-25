@@ -4,13 +4,13 @@ import CircularProgress from '@mui/material/CircularProgress'
 import type { UserObject } from 'convex/schema'
 import * as React from 'react'
 import { useNavigate, useParams } from 'react-router'
-import { apiFetchUserByClerkId, apiPushUserUpdate } from '../../apiCalls/users'
-import PageContainer from '../../components/admin/PageContainer'
-import type { UserValues } from '../../components/admin/UserForm'
+import { apiFetchUserByClerkId, apiPushUserUpdate } from '../../../apiCalls/users'
+import PageContainer from '../../../components/admin/PageContainer'
+import type { UserValues } from '../../../components/admin/UserForm'
 // Import the new abstracted UserForm component and types
-import UserForm, { validateUser } from '../../components/admin/UserForm'
-import type { FormState } from '../../components/mui/AbstractForm'
-import useNotifications from '../../hooks/useNotifications/useNotifications'
+import UserForm, { validateUser } from '../../../components/admin/UserForm'
+import type { FormState } from '../../../components/mui/AbstractForm'
+import useNotifications from '../../../hooks/useNotifications/useNotifications'
 
 function UserEditForm({
   initialValues,
