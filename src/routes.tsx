@@ -10,6 +10,9 @@ import UserList from './pages/admin/users/UserList'
 import UserShow from './pages/admin/users/UserShow'
 import Home from './pages/Home/Home'
 import NotFound from './pages/NotFound/NotFound'
+import ArticlesList from './pages/admin/articles/ArticlesList'
+import ArticleShow from './pages/admin/articles/ArticleShow'
+import ArticleCreate from './pages/admin/articles/ArticlesCreate'
 
 const AppRoutes = [
   {
@@ -31,23 +34,17 @@ const AppRoutes = [
         Component: AdminLayout,
         children: [
           { name: 'AdminHome', path: '/admin', index: true, Component: AdminHome },
-          {
-            path: '/admin/users',
-            Component: UserList,
-          },
-          {
-            path: '/admin/users/:userId',
-            Component: UserShow,
-          },
-          {
-            path: '/admin/users/:userId/edit',
-            Component: UserEdit,
-          },
-          // Fallback route for the example routes in dashboard sidebar items
-          {
-            path: '/admin/*',
-            Component: UserList,
-          },
+          // USERS
+          { path: '/admin/users', Component: UserList, showInNav: true},
+          { path: '/admin/users/:userId', Component: UserShow, showInNav: true },
+          { path: '/admin/users/:userId/edit', Component: UserEdit, showInNav: true},
+          { path: '/admin/*', Component: AdminHome, showInNav: true },
+          // ARTICLES
+          { path: '/admin/articles', Component: ArticlesList, showInNav: true },
+          { path: '/admin/articles/:articleId/show', Component: ArticleShow, showInNav: true },
+          { path: '/admin/articles/create', Component: ArticleCreate, showInNav: true},
+          // { path: '/admin/articles/:articleId/edit', Component: ArticleEdit },
+          // { path: '/admin/*', Component: AdminHome },
         ],
       },
     ],

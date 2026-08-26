@@ -1,4 +1,5 @@
 import BarChartIcon from '@mui/icons-material/BarChart'
+import ArticleIcon from '@mui/icons-material/Article';
 import DescriptionIcon from '@mui/icons-material/Description'
 import LayersIcon from '@mui/icons-material/Layers'
 import PersonIcon from '@mui/icons-material/Person'
@@ -147,6 +148,13 @@ export default function DashboardSidebar({
               title='Users'
               icon={<PersonIcon />}
               href='/admin/users'
+              selected={!!matchPath('/admin/users', pathname)}
+            />
+            <DashboardSidebarPageItem
+              id='articles'
+              title='Articles'
+              icon={<ArticleIcon />}
+              href='/admin/articles'
               selected={!!matchPath('/admin/users', pathname)}
             />
             <DashboardSidebarDividerItem />

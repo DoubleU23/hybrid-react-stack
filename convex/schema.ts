@@ -46,9 +46,19 @@ export default defineSchema({
     text: v.string(),
     isCompleted: v.boolean(),
   }),
-  users: defineTable(userValidator)
+ users: defineTable(userValidator)
     .index("by_clerk_user_id", ["clerk_user_id"]),
-})
+  articles: defineTable({
+      title: v.string(),
+      subtitle: v.string(),
+      text: v.string(), // Textareas use regular string types in Convex
+      author: v.string(),
+      created_at: v.float64(), // High-precision numeric timestamp for dates
+      img_url: v.string(), // Mapped to boolean to match your 'checkbox' type
+    }).index("by_title", ["title"]),
+  });
+
+
 export interface DBResult {
   success: boolean
   msg?: string

@@ -73,6 +73,7 @@ const userFields: FieldConfig<UserValues>[] = [
   { name: 'isFullTime', label: 'Full-time', type: 'checkbox' },
 ]
 
+
 export default function UserForm(props: UserFormProps) {
   return <AbstractForm<UserValues> {...props} fields={userFields} defaultBackButtonPath='/users' />
 }

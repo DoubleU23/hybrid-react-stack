@@ -14,6 +14,7 @@ import {
   type SelectProps,
   Stack,
   TextField,
+  TextareaAutosize
 } from '@mui/material'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -21,7 +22,7 @@ import dayjs, { type Dayjs } from 'dayjs'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-export type FieldType = 'text' | 'number' | 'checkbox' | 'select' | 'date'
+export type FieldType = 'text' | 'textarea' | 'number' | 'checkbox' | 'select' | 'date'
 
 export interface SelectOption {
   value: string | number
@@ -117,7 +118,15 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
             fullWidth
           />
         )
-
+       case 'textarea':
+        return (
+          <TextareaAutosize
+            name={String(field.name)}
+            defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididuntut labore et dolore magna aliqua."
+            minRows={5}
+            style={{minHeight: '300px'}}
+          />
+        )
       case 'checkbox':
         return (
           <FormControl component='fieldset'>

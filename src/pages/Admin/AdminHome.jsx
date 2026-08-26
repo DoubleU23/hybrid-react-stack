@@ -1,4 +1,4 @@
-import PageContainer from "src/components/admin/PageContainer"
+import PageContainer from "src/components/mui/PageContainer"
 import Box from "@mui/material/Box"
 export default function AdminHome(params) {
 

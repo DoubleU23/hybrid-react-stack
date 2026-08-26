@@ -4,7 +4,7 @@ import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
 import * as React from 'react'
 import { useNavigate, useParams } from 'react-router'
-import PageContainer from '../../../components/admin/PageContainer'
+import PageContainer from 'src/components/mui/PageContainer'
 import type { UserValues } from './UserForm'
 import UserForm, { validateUser } from './UserForm'
 import type { FormState } from '../../../components/mui/AbstractForm'
@@ -109,9 +109,9 @@ function UserEditForm({
 export default function EmployeeEdit() {
   const { userId } = useParams()
   const [isLoading, setIsLoding] = useState(true)
-  let userQuery = useQuery(api.users.getUserByClerkUserId, { clerk_user_id: userId || "" })
+  let user = useQuery(api.users.getUserByClerkUserId, { clerk_user_id: userId || "" })
 // const user = userResponse[0]
-console.log('user from query:>> ', userQuery );
+console.log('user from query:>> ', user );
   const updateUser = useMutation(api.users.updateUserByClerkId)
 
   const handleSubmit = React.useCallback(async (formValues: Partial<UserValues>) => {
@@ -126,7 +126,7 @@ console.log('user from query:>> ', userQuery );
     }
   }, [userId, updateUser])
 
-  if (userQuery === undefined) {
+  if (user === undefined) {
     return (
       <PageContainer title="Loading User..." breadcrumbs={[{ title: 'Users', path: '/admin/users' }, { title: 'Edit' }]}>
         <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', m: 1 }}>
@@ -136,7 +136,7 @@ console.log('user from query:>> ', userQuery );
     )
   }
 
-  if (userQuery === null) {
+  if (user === null) {
     return (
       <PageContainer title="User Not Found" breadcrumbs={[{ title: 'Users', path: '/admin/users' }, { title: 'Edit' }]}>
         <Box sx={{ flexGrow: 1, p: 2 }}>
@@ -146,7 +146,6 @@ console.log('user from query:>> ', userQuery );
     )
   }
 
-const user = userQuery[0]
 
   return (
     <PageContainer

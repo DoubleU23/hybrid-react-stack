@@ -22,7 +22,7 @@ import {
 import * as React from 'react'
 import { useNavigate, useSearchParams } from 'react-router'
 import type { UserObject } from '../../../../convex/schema'
-import PageContainer from '../../../components/admin/PageContainer'
+import PageContainer from '../../../components/mui/PageContainer'
 import { INITIAL_PAGE_SIZE } from '../../../constants'
 import { useDialogs } from '../../../hooks/useDialogs/useDialogs'
 import useNotifications from '../../../hooks/useNotifications/useNotifications'
