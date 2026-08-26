@@ -100,7 +100,7 @@ let i = 0;
             <DataGrid
                       rows={articleList}
                       rowCount={resolvedRowCount}
-                      getRowId={row => Number(row._id)}
+                      getRowId={row => row._id}
                       columns={columns}
                       /* pagination
                       paginationMode='server' */

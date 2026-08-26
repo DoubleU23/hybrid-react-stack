@@ -48,7 +48,7 @@ function UserEditForm({
 // 2. Haupt-Export für die Routing-Page
 export default function EmployeeEdit() {
   const { userId } = useParams()
-  const userQuery = useQuery(api.users.getUserByClerkUserId, { clerk_user_id: userId || '' })
+  const user = useQuery(api.users.getUserByClerkUserId, { clerk_user_id: userId || '' })
   const updateUser = useMutation(api.users.updateUserByClerkId)
 
   const handleSubmit = React.useCallback(
@@ -61,7 +61,7 @@ export default function EmployeeEdit() {
     [userId, updateUser]
   )
 
-  if (userQuery === undefined) {
+  if (user === undefined) {
     return (
       <PageContainer title="Loading User..." breadcrumbs={[{ title: 'Users', path: '/admin/users' }, { title: 'Edit' }]}>
         <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', m: 1 }}>
@@ -71,7 +71,7 @@ export default function EmployeeEdit() {
     )
   }
 
-  if (userQuery === null || userQuery.length === 0) {
+  if (user === null || user.length === 0) {
     return (
       <PageContainer title="User Not Found" breadcrumbs={[{ title: 'Users', path: '/admin/users' }, { title: 'Edit' }]}>
         <Box sx={{ flexGrow: 1, p: 2 }}>
@@ -80,8 +80,6 @@ export default function EmployeeEdit() {
       </PageContainer>
     )
   }
-
-  const user = userQuery[0]
 
   return (
     <PageContainer
@@ -92,7 +90,7 @@ export default function EmployeeEdit() {
         { title: 'Edit' },
       ]}
     >
-      <Box sx={{ display: 'flex', flex: 1 }}>
+      <Box sx={{ flexGrow: 1, width: '100%' }}>
         <UserEditForm initialValues={user as UserValues} onSubmit={handleSubmit} />
       </Box>
     </PageContainer>

@@ -1,5 +1,6 @@
 import { defineSchema, defineTable } from 'convex/server'
 import { type Infer, v } from 'convex/values'
+import type { Doc } from "./_generated/dataModel"
 
 export type UserRole = 'user' | 'admin'
 
@@ -41,6 +42,18 @@ export const userValidator = v.object({
 
 export type UserObject = Infer<typeof userValidator>
 
+
+export const articleValidator = v.object({
+      title: v.string(),
+      subtitle: v.string(),
+      text: v.string(), // Textareas use regular string types in Convex
+      author: v.string(),
+      created_at: v.float64(), // High-precision numeric timestamp for dates
+      img_url: v.string(), // Mapped to boolean to match your 'checkbox' type
+    })
+
+  export type ArticleObject = Infer<typeof articleValidator>;
+
 export default defineSchema({
   tasks: defineTable({
     text: v.string(),
@@ -48,14 +61,8 @@ export default defineSchema({
   }),
  users: defineTable(userValidator)
     .index("by_clerk_user_id", ["clerk_user_id"]),
-  articles: defineTable({
-      title: v.string(),
-      subtitle: v.string(),
-      text: v.string(), // Textareas use regular string types in Convex
-      author: v.string(),
-      created_at: v.float64(), // High-precision numeric timestamp for dates
-      img_url: v.string(), // Mapped to boolean to match your 'checkbox' type
-    }).index("by_title", ["title"]),
+  articles: defineTable(articleValidator)
+    .index("by_title", ["title"]),
   });
 
 

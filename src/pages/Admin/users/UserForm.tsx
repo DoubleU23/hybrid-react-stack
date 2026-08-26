@@ -47,9 +47,7 @@ const userFields: FieldConfig<UserValues>[] = [
       { value: 'user', label: 'user' },
     ],
   },
-  { name: 'created_at', label: 'Join date', type: 'date' },
-  { name: 'isFullTime', label: 'Full-time', type: 'checkbox' },
-]
+  { name: 'created_at', label: 'Join date', type: 'date' },]
 
 // Externe Schnittstelle für Edit / Create Pages
 export interface UserFormProps {

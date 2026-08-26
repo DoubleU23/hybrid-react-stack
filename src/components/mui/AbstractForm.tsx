@@ -124,7 +124,9 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
         return (
           <TextareaAutosize
             name={String(field.name)}
-            defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididuntut labore et dolore magna aliqua."
+            value={value ?? 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididuntut labore et dolore magna aliqua.'} 
+            onChange={e => handleChange(field.name, e.target.value)}
+            placeholder={field.label}
             minRows={3}
             style={{minHeight: '100px', width: '100%'}}
             {...field.addProps}

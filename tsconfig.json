@@ -18,6 +18,7 @@
     "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "paths": {
+      "@convex/dataModel": ["./convex/_generated&dataModel.d.ts"],
       "@convex/api": ["./convex/_generated/api.js"],
       "@convex/server": ["./convex/_generated/server.js"]
     }

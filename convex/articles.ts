@@ -1,6 +1,7 @@
 import { v } from "convex/values"
-import { query } from "./_generated/server"
+import { mutation, query } from "./_generated/server"
 import type { Id } from "./_generated/dataModel"
+import { articleValidator } from "./schema"
 
 export const getArticles = query({
   args: {},
@@ -15,5 +16,13 @@ export const getArticleById = query({
     handler: async (ctx, args) => {
         return await ctx.db
         .get('articles', args.articleId)
+    }
+})
+
+export const createArticle = mutation({
+    args: {article: articleValidator},
+    handler: async (ctx, args) => {
+        return await ctx.db
+        .insert('articles', args.article)
     }
 })

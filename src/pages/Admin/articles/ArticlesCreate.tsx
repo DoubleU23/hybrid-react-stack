@@ -1,80 +1,85 @@
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import Box from '@mui/material/Box'
-import { Button, CircularProgress, Divider, Grid, Typography, Stack, Paper } from "@mui/material";
-import PageContainer from 'src/components/mui/PageContainer';
-import { useNavigate } from 'react-router';
-import ArticleForm from './ArticleForm';
+import { useCallback, useState, useEffect } from 'react'
+import { useNavigate } from 'react-router'
+import { Box, CircularProgress } from '@mui/material'
+import { useMutation, useQuery } from 'convex/react'
+import { api } from '@convex/api' // Matches your workspace structure
 
+import PageContainer from 'src/components/mui/PageContainer'
+import useNotifications from 'src/hooks/useNotifications/useNotifications'
+import ArticleForm, { type ArticleValues } from './ArticleForm'
+import type { ArticleObject, UserObject } from "../../../../convex/schema"
+import { useAuth } from '@clerk/react'
+
+//  type ArticleObject = Doc<"articles">
+
+// Default empty form template schema matching target typing
 
 export default function ArticleCreate() {
-    const navigate = useNavigate()
+ const navigate = useNavigate()
+  const notifications = useNotifications()
+  const createArticle =  useMutation(api.articles.createArticle)
+const {userId} = useAuth()
+const user = useQuery(api.users.getUserByClerkUserId, {clerk_user_id: userId})
+console.log('userquery :>> ', user);
 
-    const handleBack = () => {
+  const handleSubmit = useCallback(
+    async (formValues: ArticleValues) => {
+      try {
+        await createArticle({
+          article: formValues as ArticleObject
+        })
+
+        notifications.show('Article successfully created.', {
+          severity: 'success',
+          autoHideDuration: 3000,
+        })
+
         navigate('/admin/articles')
-    }
+      } catch (createError) {
+        console.error('Mutation failed:', createError)
+        notifications.show(`Failed to save Article. Reason: ${(createError as Error).message}`, {
+          severity: 'error',
+          autoHideDuration: 3000,
+        })
+      }
+    },
+    [createArticle, navigate, notifications]
+  )
 
+  if (user === undefined) {
     return (
-    <PageContainer title={'Create Article'} breadcrumbs={[{title: 'Dashboard', path: "/admin"}, {title: 'Articles', path: "/admin/articles"}]}>
-            <Box sx={{ flexGrow: 1, width: '100%' }}>
-        <Grid container spacing={2} sx={{ width: '100%' }}>
-          <Grid size={{ xs: 12, sm: 6 }}>
-            <Paper sx={{ px: 2, py: 1 }}>
-              <Typography variant='overline'>title</Typography>
-              <Typography variant='body1' sx={{ mb: 1 }}>
-                asdf
-              </Typography>
-            </Paper>
-          </Grid>
-
-          <Grid size={{ xs: 12, sm: 6 }}>
-            <Paper sx={{ px: 2, py: 1 }}>
-              <Typography variant='overline'>Subtitle</Typography>
-              <Typography variant='body1' sx={{ mb: 1 }}>
-                asdf
-              </Typography>
-            </Paper>
-          </Grid>
-          <Grid size={{ xs: 12, sm: 6 }}>
-            <Paper sx={{ px: 2, py: 1 }}>
-              <Typography variant='overline'>Created at</Typography>
-              <Typography variant='body1' sx={{ mb: 1 }}>
-                 asdf
-              </Typography>
-            </Paper>
-          </Grid>
-          <Grid size={{ xs: 12, sm: 6 }}>
-            <Paper sx={{ px: 2, py: 1 }}>
-              <Typography variant='overline'>Created By</Typography>
-              <Typography variant='body1' sx={{ mb: 1 }}>
-                asdf
-              </Typography>
-            </Paper>
-          </Grid>
-        </Grid>
-
-        <Divider sx={{ my: 3 }} />
-        <Box sx={{ flexGrow: 1, width: '100%' }}>
-            <Paper sx={{ px: 2, pb: 5 }}>
-                <Typography variant='overline'>Image URL</Typography>
-                <Typography variant='body1' sx={{ mb: 1 }}>
-                asdf
-                </Typography>
-            </Paper>
+      <PageContainer title="User Not Found" breadcrumbs={[{ title: 'Users', path: '/admin/users' }]}>
+        <Box sx={{ flexGrow: 1, p: 2 }}>
+          <CircularProgress />
         </Box>
-        <Box sx={{ flexGrow: 1, width: '100%' }}>
-            <Paper sx={{ px: 2, pb: 5 }}>
-                <Typography variant='overline'>Text</Typography>
-                <Typography variant='body1' sx={{ mb: 1 }}>
-                asdf
-                </Typography>
-            </Paper>
-        </Box>
-        <Stack direction='row' spacing={2} sx={{ justifyContent: 'space-between' }}>
-          <Button variant='contained' startIcon={<ArrowBackIcon />} onClick={handleBack}>
-            Back
-          </Button>
-          </Stack>
-      </Box>
-        </PageContainer>
+      </PageContainer>
     )
+  }
+const initialArticleValues: ArticleValues = {
+  title: '',
+  subtitle: '',
+  author: user.username,
+  created_at: Date.now(), // Sets modern timestamp automatically on load
+  text: '',
+  img_url: '',
+}
+
+  return (
+    <PageContainer
+      title="Create New Article"
+      breadcrumbs={[
+        { title: 'Articles', path: '/admin/articles' },
+        { title: 'Create' },
+      ]}
+    >
+      <Box sx={{ display: 'flex', flex: 1, p: 2 }}>
+        <ArticleForm
+          initialValues={initialArticleValues}
+          onSubmit={(e) => {console.log('submit :>> '); handleSubmit(e)}}
+          submitButtonLabel="Create Article"
+          backButtonPath="/admin/articles"
+        />
+      </Box>
+    </PageContainer>
+  )
 }
