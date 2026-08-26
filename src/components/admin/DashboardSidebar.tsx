@@ -148,14 +148,14 @@ export default function DashboardSidebar({
               title='Users'
               icon={<PersonIcon />}
               href='/admin/users'
-              selected={!!matchPath('/admin/users', pathname)}
+              selected={!!pathname.includes('/admin/users')}
             />
             <DashboardSidebarPageItem
               id='articles'
               title='Articles'
               icon={<ArticleIcon />}
               href='/admin/articles'
-              selected={!!matchPath('/admin/users', pathname)}
+              selected={!!pathname.includes('/admin/articles')}
             />
             <DashboardSidebarDividerItem />
             <DashboardSidebarHeaderItem>Example items</DashboardSidebarHeaderItem>
