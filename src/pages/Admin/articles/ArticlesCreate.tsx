@@ -1,32 +1,29 @@
-import { useCallback, useState, useEffect } from 'react'
+import * as React from 'react'
 import { useNavigate } from 'react-router'
-import { Box, CircularProgress } from '@mui/material'
-import { useMutation, useQuery } from 'convex/react'
-import { api } from '@convex/api' // Matches your workspace structure
+import { Box } from '@mui/material'
+import { useMutation } from 'convex/react'
+import { api } from '@convex/api'
 
 import PageContainer from 'src/components/mui/PageContainer'
 import useNotifications from 'src/hooks/useNotifications/useNotifications'
-import ArticleForm, { type ArticleValues } from './ArticleForm'
-import type { ArticleObject, UserObject } from "../../../../convex/schema"
+import ArticleForm, { type ArticleObject } from './ArticleForm'
 import { useAuth } from '@clerk/react'
+import { useQuery } from 'convex/react'
+import {CircularProgress} from '@mui/material'
 
-//  type ArticleObject = Doc<"articles">
-
-// Default empty form template schema matching target typing
 
 export default function ArticleCreate() {
- const navigate = useNavigate()
+  const navigate = useNavigate()
   const notifications = useNotifications()
-  const createArticle =  useMutation(api.articles.createArticle)
-const {userId} = useAuth()
-const user = useQuery(api.users.getUserByClerkUserId, {clerk_user_id: userId})
-console.log('userquery :>> ', user);
+  const {userId} = useAuth()
+  const user = useQuery(api.users.getUserByClerkUserId, {clerk_user_id: userId})
+  const createArticle = useMutation(api.articles.createArticle)
 
-  const handleSubmit = useCallback(
-    async (formValues: ArticleValues) => {
+  const handleSubmit = React.useCallback(
+    async (formValues: ArticleObject) => {
       try {
         await createArticle({
-          article: formValues as ArticleObject
+          article: formValues,
         })
 
         notifications.show('Article successfully created.', {
@@ -36,7 +33,7 @@ console.log('userquery :>> ', user);
 
         navigate('/admin/articles')
       } catch (createError) {
-        console.error('Mutation failed:', createError)
+        console.error('Convex transaction rejected:', createError)
         notifications.show(`Failed to save Article. Reason: ${(createError as Error).message}`, {
           severity: 'error',
           autoHideDuration: 3000,
@@ -46,23 +43,24 @@ console.log('userquery :>> ', user);
     [createArticle, navigate, notifications]
   )
 
-  if (user === undefined) {
+
+  if(!user)
     return (
-      <PageContainer title="User Not Found" breadcrumbs={[{ title: 'Users', path: '/admin/users' }]}>
-        <Box sx={{ flexGrow: 1, p: 2 }}>
+      <PageContainer title="Loading Articles..." breadcrumbs={[{ title: 'Users', path: '/admin/users' }]}>
+        <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', m: 1 }}>
           <CircularProgress />
         </Box>
       </PageContainer>
-    )
-  }
-const initialArticleValues: ArticleValues = {
+  )
+
+const initialArticleValues: ArticleObject = {
   title: '',
   subtitle: '',
   author: user.username,
-  created_at: Date.now(), // Sets modern timestamp automatically on load
+  created_at: Date.now(),
   text: '',
-  img_url: '',
-}
+  img_url: null,
+} as any
 
   return (
     <PageContainer
@@ -75,7 +73,7 @@ const initialArticleValues: ArticleValues = {
       <Box sx={{ display: 'flex', flex: 1, p: 2 }}>
         <ArticleForm
           initialValues={initialArticleValues}
-          onSubmit={(e) => {console.log('submit :>> '); handleSubmit(e)}}
+          onSubmit={handleSubmit}
           submitButtonLabel="Create Article"
           backButtonPath="/admin/articles"
         />

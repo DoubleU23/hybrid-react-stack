@@ -10,6 +10,7 @@
 
 import type * as api_ from "../api.js";
 import type * as articles from "../articles.js";
+import type * as files from "../files.js";
 import type * as http from "../http.js";
 import type * as messages from "../messages.js";
 import type * as tasks from "../tasks.js";
@@ -24,6 +25,7 @@ import type {
 declare const fullApi: ApiFromModules<{
   api: typeof api_;
   articles: typeof articles;
+  files: typeof files;
   http: typeof http;
   messages: typeof messages;
   tasks: typeof tasks;

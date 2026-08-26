@@ -7,22 +7,23 @@ import {
   FormControlLabel,
   FormGroup,
   FormHelperText,
-  Grid, // MUI v6 standard, or use your local Grid import
   InputLabel,
   MenuItem,
   Select,
+  TextareaAutosize,
   type SelectProps,
   Stack,
   TextField,
-  TextareaAutosize
 } from '@mui/material'
+import Grid from '@mui/material/Grid' // Empfohlen für MUI v6
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs, { type Dayjs } from 'dayjs'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import InputFileUpload from './InputFileUpload'
 
-export type FieldType = 'text' | 'textarea' | 'number' | 'checkbox' | 'select' | 'date'
+export type FieldType = 'text' | 'textarea' | 'number' | 'checkbox' | 'select' | 'date' | 'file'
 
 export interface SelectOption {
   value: string | number
@@ -34,8 +35,8 @@ export interface FieldConfig<T> {
   label: string
   type: FieldType
   gridSize?: { xs?: number; sm?: number; md?: number; lg?: number }
-  options?: SelectOption[] // Required for 'select' type
-  selectProps?: Partial<SelectProps>,
+  options?: SelectOption[]
+  selectProps?: Partial<SelectProps>
   addProps?: object
 }
 
@@ -48,8 +49,8 @@ export interface AbstractFormProps<T> {
   formState: FormState<T>
   fields: FieldConfig<T>[]
   onFieldChange: (name: keyof T, value: any) => void
-  onSubmit: (values: T) => Promise<void> | void
-  onReset?: (values: T) => void
+  onSubmit: () => Promise<void> | void
+  onReset?: () => void
   submitButtonLabel: string
   backButtonPath?: string
   defaultBackButtonPath?: string
@@ -77,12 +78,12 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
       event.preventDefault()
       setIsSubmitting(true)
       try {
-        await onSubmit(formValues)
+        await onSubmit()
       } finally {
         setIsSubmitting(false)
       }
     },
-    [formValues, onSubmit],
+    [onSubmit],
   )
 
   const handleChange = React.useCallback(
@@ -91,10 +92,6 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
     },
     [onFieldChange],
   )
-
-  const handleReset = React.useCallback(() => {
-    if (onReset) onReset(formValues)
-  }, [formValues, onReset])
 
   const handleBack = React.useCallback(() => {
     navigate(backButtonPath ?? defaultBackButtonPath)
@@ -120,11 +117,11 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
             {...field.addProps}
           />
         )
-       case 'textarea':
+      case 'textarea':
         return (
           <TextareaAutosize
             name={String(field.name)}
-            value={value ?? 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididuntut labore et dolore magna aliqua.'} 
+            value={value ?? 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididuntut labore et dolore magna aliqua.'}
             onChange={e => handleChange(field.name, e.target.value)}
             placeholder={field.label}
             minRows={3}
@@ -145,7 +142,6 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
             <FormHelperText error={hasError}>{errorText ?? ' '}</FormHelperText>
           </FormControl>
         )
-
       case 'select':
         return (
           <FormControl error={hasError} fullWidth>
@@ -153,7 +149,7 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
             <Select
               value={value ?? ''}
               onChange={(e) => handleChange(field.name, e.target.value)}
-              labelId={`$String(field.name)-label`}
+              labelId={`${String(field.name)}-label`}
               name={String(field.name)}
               label={field.label}
               fullWidth
@@ -168,7 +164,6 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
             <FormHelperText>{errorText ?? ' '}</FormHelperText>
           </FormControl>
         )
-
       case 'date':
         return (
           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -194,7 +189,28 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
             />
           </LocalizationProvider>
         )
+      case 'file': {
+        const fileValue = value as File | FileList | null
+        const displayName = fileValue
+          ? fileValue instanceof FileList
+            ? `${fileValue.length} files selected`
+            : (fileValue as File).name
+          : 'No file chosen'
 
+        return (
+          <FormControl error={hasError} fullWidth>
+            <InputFileUpload
+              fieldName={String(field.name)}
+              label={field.label}
+              onFieldChange={(name, val) => handleChange(field.name, val)}
+              {...field.addProps}
+            />
+            <FormHelperText error={hasError}>
+              {hasError ? errorText : displayName}
+            </FormHelperText>
+          </FormControl>
+        )
+      }
       default:
         return null
     }
@@ -206,7 +222,7 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
       onSubmit={handleSubmit}
       noValidate
       autoComplete='off'
-      onReset={handleReset}
+      onReset={onReset}
       sx={{ width: '100%' }}
     >
       <FormGroup>

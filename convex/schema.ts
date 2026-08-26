@@ -49,7 +49,7 @@ export const articleValidator = v.object({
       text: v.string(), // Textareas use regular string types in Convex
       author: v.string(),
       created_at: v.float64(), // High-precision numeric timestamp for dates
-      img_url: v.string(), // Mapped to boolean to match your 'checkbox' type
+      img_url: v.union(v.string(), v.null()),
     })
 
   export type ArticleObject = Infer<typeof articleValidator>;
@@ -63,6 +63,11 @@ export default defineSchema({
     .index("by_clerk_user_id", ["clerk_user_id"]),
   articles: defineTable(articleValidator)
     .index("by_title", ["title"]),
+  files: defineTable({
+    sha256: v.string(),
+    size: v.number(),
+    contentType: v.any()
+  })
   });
 
 
