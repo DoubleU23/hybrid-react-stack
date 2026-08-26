@@ -35,7 +35,8 @@ export interface FieldConfig<T> {
   type: FieldType
   gridSize?: { xs?: number; sm?: number; md?: number; lg?: number }
   options?: SelectOption[] // Required for 'select' type
-  selectProps?: Partial<SelectProps>
+  selectProps?: Partial<SelectProps>,
+  addProps?: object
 }
 
 export interface FormState<T> {
@@ -116,6 +117,7 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
             error={hasError}
             helperText={errorText ?? ' '}
             fullWidth
+            {...field.addProps}
           />
         )
        case 'textarea':
@@ -123,8 +125,9 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
           <TextareaAutosize
             name={String(field.name)}
             defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididuntut labore et dolore magna aliqua."
-            minRows={5}
-            style={{minHeight: '300px'}}
+            minRows={3}
+            style={{minHeight: '100px', width: '100%'}}
+            {...field.addProps}
           />
         )
       case 'checkbox':
@@ -185,6 +188,7 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
                   fullWidth: true,
                 },
               }}
+              {...field.addProps}
             />
           </LocalizationProvider>
         )
