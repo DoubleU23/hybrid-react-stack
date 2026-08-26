@@ -1,5 +1,5 @@
-import type { FieldConfig, FormState } from '../mui/AbstractForm'
-import AbstractForm from '../mui/AbstractForm'
+import type { FieldConfig, FormState } from '../../../components/mui/AbstractForm'
+import AbstractForm from '../../../components/mui/AbstractForm'
 export interface UserValues {
   first_name: string | null
   last_name: string | null

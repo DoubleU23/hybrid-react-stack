@@ -1,6 +1,7 @@
 // TODO: add user.updated and doublecheck user fields needed + use UserObject interface
 
 import { v } from 'convex/values'
+import { paginationOptsValidator } from "convex/server";
 import { api } from './_generated/api'
 import { httpAction, mutation, query } from './_generated/server'
 import type { DBResult, EmailAddress, UserObject } from './schema'
@@ -16,17 +17,42 @@ export const getUsers = query({
 
 export const getUsersPaginated = query({
   args: {
-    // Validate pagination requirements strictly using built-in Convex types
-    paginationOpts: v.object({
-      numItems: v.number(),
-      cursor: v.union(v.string(), v.null()),
-    }),
+    // Validates object shape containing numItems and cursor automatically
+    paginationOpts: paginationOptsValidator,
   },
   handler: async (ctx, args) => {
-    // 2. Fetch using your high-performance index
-    return await ctx.db.query('users').order('desc').paginate(args.paginationOpts)
+    return await ctx.db.query('users').order('desc').paginate(args.paginationOpts);
   },
-})
+});
+
+
+export const getUsersFiltered = query({
+  args: {
+    paginationOpts: paginationOptsValidator,
+    // Dynamic filter field configuration
+    filterField: v.optional(v.string()),
+    filterValue: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    // 1. Fetch the base dataset ordered chronologically
+    let result = await ctx.db.query("users").order("desc").paginate(args.paginationOpts);
+    // 3. Apply the custom targeted dynamic column filter
+    if (args.filterField && args.filterValue) {
+      const matchVal = args.filterValue.toLowerCase();
+
+      result.page = result.page.filter((user) => {
+        // Fixed: Cast the key dynamically to match the keys of a single user object record
+        const fieldKey = args.filterField as keyof typeof user;
+        const userValue = user[fieldKey];
+
+        if (userValue === undefined || userValue === null) return false;
+        return String(userValue).toLowerCase().includes(matchVal);
+      });
+    }
+
+    return result;
+  },
+});
 
 export const getCurrentUser = query({
   args: {},
@@ -50,7 +76,7 @@ export const getUserByClerkUserId = query({
     return await ctx.db
       .query('users')
       .withIndex('by_clerk_user_id', q => q.eq('clerk_user_id', args.clerk_user_id))
-      .collect()
+      .unique()
   },
 })
 

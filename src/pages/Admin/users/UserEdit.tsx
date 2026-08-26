@@ -1,17 +1,20 @@
+import { useState } from 'react'
 import Alert from '@mui/material/Alert'
 import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
-import type { UserObject } from 'convex/schema'
 import * as React from 'react'
 import { useNavigate, useParams } from 'react-router'
-import { apiFetchUserByClerkId, apiPushUserUpdate } from '../../../apiCalls/users'
 import PageContainer from '../../../components/admin/PageContainer'
-import type { UserValues } from '../../../components/admin/UserForm'
-// Import the new abstracted UserForm component and types
-import UserForm, { validateUser } from '../../../components/admin/UserForm'
+import type { UserValues } from './UserForm'
+import UserForm, { validateUser } from './UserForm'
 import type { FormState } from '../../../components/mui/AbstractForm'
 import useNotifications from '../../../hooks/useNotifications/useNotifications'
+import { useMutation, useQuery } from 'convex/react'
+import { api } from '@convex/api'
 
+// ==========================================
+// 1. Define UserEditForm first
+// ==========================================
 function UserEditForm({
   initialValues,
   onSubmit,
@@ -23,7 +26,6 @@ function UserEditForm({
   const navigate = useNavigate()
   const notifications = useNotifications()
 
-  // 1. Fixed error mapping with 'as any' and corrected 'formValues' reference to 'initialValues'
   const [formState, setFormState] = React.useState<FormState<Partial<UserValues>>>(() => ({
     values: initialValues,
     errors: {} as any,
@@ -56,7 +58,6 @@ function UserEditForm({
       }
 
       const newFormValues = { ...formValues, [name]: value }
-
       setFormValues(newFormValues)
       validateField(newFormValues)
     },
@@ -81,14 +82,12 @@ function UserEditForm({
         severity: 'success',
         autoHideDuration: 3000,
       })
-
       navigate('/admin/users')
     } catch (editError) {
       notifications.show(`Failed to edit User. Reason: ${(editError as Error).message}`, {
         severity: 'error',
         autoHideDuration: 3000,
       })
-      throw editError
     }
   }, [formValues, navigate, notifications, onSubmit, setFormErrors])
 
@@ -104,77 +103,63 @@ function UserEditForm({
   )
 }
 
+// ==========================================
+// 2. Define and Export EmployeeEdit
+// ==========================================
 export default function EmployeeEdit() {
   const { userId } = useParams()
-
-  const [user, setUser] = React.useState<UserObject | null>(null)
-  const [isLoading, setIsLoading] = React.useState(true)
-  const [error, setError] = React.useState<Error | null>(null)
-
-  const loadData = React.useCallback(async () => {
-    setError(null)
-    setIsLoading(true)
-
-    try {
-      const userData = await apiFetchUserByClerkId(userId || '')
-      setUser(userData)
-    } catch (showDataError) {
-      setError(showDataError as Error)
-    }
-    setIsLoading(false)
-  }, [userId])
-
-  React.useEffect(() => {
-    loadData()
-  }, [loadData])
+  const [isLoading, setIsLoding] = useState(true)
+  let userQuery = useQuery(api.users.getUserByClerkUserId, { clerk_user_id: userId || "" })
+// const user = userResponse[0]
+console.log('user from query:>> ', userQuery );
+  const updateUser = useMutation(api.users.updateUserByClerkId)
 
   const handleSubmit = React.useCallback(async (formValues: Partial<UserValues>) => {
-    console.log('formValues :>> ', formValues)
-    // delete formValues._id
-    // delete formValues._creationTime
-    const updatedData = await apiPushUserUpdate(formValues)
-    setUser(updatedData)
-  }, [])
+    try {
+      await updateUser({
+        clerk_user_id: userId || "",
+        user: formValues as any
+      })
+    } catch (mutationError) {
+      console.error("Mutation failed:", mutationError)
+      throw mutationError
+    }
+  }, [userId, updateUser])
 
-  const renderEdit = React.useMemo(() => {
-    if (isLoading) {
-      return (
-        <Box
-          sx={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '100%',
-            m: 1,
-          }}
-        >
+  if (userQuery === undefined) {
+    return (
+      <PageContainer title="Loading User..." breadcrumbs={[{ title: 'Users', path: '/admin/users' }, { title: 'Edit' }]}>
+        <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', m: 1 }}>
           <CircularProgress />
         </Box>
-      )
-    }
-    if (error) {
-      return (
-        <Box sx={{ flexGrow: 1 }}>
-          <Alert severity='error'>{error.message}</Alert>
-        </Box>
-      )
-    }
+      </PageContainer>
+    )
+  }
 
-    return user ? <UserEditForm initialValues={user as UserValues} onSubmit={handleSubmit} /> : null
-  }, [isLoading, error, user, handleSubmit])
+  if (userQuery === null) {
+    return (
+      <PageContainer title="User Not Found" breadcrumbs={[{ title: 'Users', path: '/admin/users' }, { title: 'Edit' }]}>
+        <Box sx={{ flexGrow: 1, p: 2 }}>
+          <Alert severity='error'>Could not find user with the provided ID.</Alert>
+        </Box>
+      </PageContainer>
+    )
+  }
+
+const user = userQuery[0]
 
   return (
     <PageContainer
-      title={`Edit User "${user?.username}"`}
+      title={`Edit User "${user.username}"`}
       breadcrumbs={[
         { title: 'Users', path: '/admin/users' },
-        { title: `${user?.username}`, path: `/admin/user/${userId}` },
+        { title: `${user.username}`, path: `/admin/user/${userId}` },
         { title: 'Edit' },
       ]}
     >
-      <Box sx={{ display: 'flex', flex: 1 }}>{renderEdit}</Box>
+      <Box sx={{ display: 'flex', flex: 1 }}>
+        <UserEditForm initialValues={user as UserValues} onSubmit={handleSubmit} />
+      </Box>
     </PageContainer>
   )
 }

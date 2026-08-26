@@ -36,7 +36,7 @@ const AppRoutes = [
             Component: UserList,
           },
           {
-            path: '/admin/user/:userId',
+            path: '/admin/users/:userId',
             Component: UserShow,
           },
           {
