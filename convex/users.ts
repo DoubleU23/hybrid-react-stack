@@ -171,7 +171,7 @@ export const handleUserClerkWebhook = httpAction(async (ctx, request) => {
   })
 
   const role = JSON.parse(public_metadata).role || 'user'
-  if (!public_metadata.role) public_metadata.role = role
+  if (!public_metadata.role) public_metadata.role = role  
 
   let dbResult: DBResult = { success: true }
   const userObject: UserObject = {

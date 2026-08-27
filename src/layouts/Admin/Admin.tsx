@@ -38,11 +38,11 @@ export default function Admin(props: any) {
   console.log('user :>> ', user)
 
   // 2. Safely trigger redirect when loading finishes and auth is missing
-  useEffect(() => {
+/*   useEffect(() => {
     if (!authState.isLoading && !authState.isAuthenticated) {
       navigate('/')
     }
-  }, [authState, navigate])
+  }, [authState, navigate]) */
 
   const theme = useTheme()
 
@@ -76,6 +76,7 @@ export default function Admin(props: any) {
   //  const boxPosition = pathname !== '/admin' ? "'position: 'relative'" : ""
   // CHECK ADMIN ROLE
 
+  console.log('authState :>> ', authState);
   const renderOutletIfAdmin = () => {
     if (authState.isLoading || (authState.isAuthenticated && user === undefined)) {
       return (
@@ -93,7 +94,7 @@ export default function Admin(props: any) {
           <CircularProgress />
         </Box>
       )
-    } else if (user === null || user.role !== 'admin' || !authState.isAuthenticated) {
+    } else if (!authState.isAuthenticated || user.role !== 'admin') {
       return <p className='text-red-500 p-6 font-bold'>Access Denied: Admins only.</p>
     }
 
