@@ -171,7 +171,7 @@ export const handleUserClerkWebhook = httpAction(async (ctx, request) => {
   })
 
   const role = JSON.parse(public_metadata).role || 'user'
-  if (!public_metadata.role) public_metadata.role = role  
+  if (!public_metadata.role) public_metadata.role = role
 
   let dbResult: DBResult = { success: true }
   const userObject: UserObject = {
@@ -187,7 +187,7 @@ export const handleUserClerkWebhook = httpAction(async (ctx, request) => {
     locale: locale || 'de-DE',
     profile_image_url: image_url,
     private_metadata: JSON.stringify(private_metadata),
-    public_metadata,
+    public_metadata: JSON.stringify(public_metadata),
     last_active_at: last_active_at || Date.now(),
     last_sign_in_at: last_sign_in_at || created_at || Date.now(),
     client_ip,
