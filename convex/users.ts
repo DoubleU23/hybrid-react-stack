@@ -170,7 +170,7 @@ export const handleUserClerkWebhook = httpAction(async (ctx, request) => {
     if (email.id === primary_email_address_id) primary_email_address = email.email_address
   })
 
-  const role = public_metadata.role || 'user'
+  const role = JSON.parse(public_metadata).role || 'user'
   if (!public_metadata.role) public_metadata.role = role
 
   let dbResult: DBResult = { success: true }
