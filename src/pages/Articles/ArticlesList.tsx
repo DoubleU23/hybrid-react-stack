@@ -32,16 +32,15 @@ if (!articles)
 
     return (
         <PageContainer maxWidth="lg" title="Articles" breadcrumbs={[{title: 'Home', path: '/'}, {title: 'Articles', path: '/articles'}]}>
-        {/* <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', m: 1 }}> */}
-            <Grid container spacing={3} sx={{ width: '100%' }}>
+            <Grid container spacing={3} sx={{ width: '100%'}}>
              {articles.map(({title, subtitle, author, img_url, text, _id}:ArticleDbQuery, index:number)=>{
 
                 return (
-                    <Grid size={{ xs: 12, md: 6, lg: 4 }} key={index}>
+                    <Grid size={{ xs: 12, md: 6, lg: 4 }} sx={{}} key={index}>
                         <Card  sx={{
-                            height: '100%',          // Zwingt die Karte, die volle Höhe des Grid-Items zu nutzen
-                            display: 'flex',         // Macht die Karte zum Flex-Container
-                            flexDirection: 'column'  // Richtet Inhalt vertikal aus
+                            height: '100%',
+                            display: 'flex',
+                            flexDirection: 'column'
                             }} onClick={() => showArticle(_id)} >
                         <CardActionArea sx={{
                             flexGrow: 1,           // Zwingt die ActionArea, den gesamten restlichen Platz einzunehmen
@@ -74,9 +73,8 @@ if (!articles)
                 </Grid >
                 )
 
-             })}
-        </Grid>
-        {/* </Box> */}
+            })}
+            </Grid>
         </PageContainer>
     )
 

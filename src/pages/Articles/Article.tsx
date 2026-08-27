@@ -4,8 +4,7 @@ import { useQuery } from "convex/react";
 import { ArticleObject } from "convex/schema";
 import { useNavigate, useParams } from "react-router";
 import PageContainer from "src/components/mui/PageContainer";
-// TODO: fix ImageDiv
-import ImageDiv from "src/components/ImageSpan";
+import ImageBox from "src/components/mui/ImageBox";
 
 interface ArticleDbQuery extends ArticleObject {
     _id: string
@@ -38,6 +37,7 @@ if (!article)
                     <Grid size={{ xs: 12, md: 6, lg: 12 }} key={articleId}>
                         <Typography variant='h6' sx={{ mb: 1 }}>{article.subtitle}</Typography>
                         <Divider  sx={{ mb: 5 }} />
+                        <ImageBox src={article.img_url} height="200px" width= '100%' />
                         <Typography variant='body1'>
                             {article.text}
                         </Typography>

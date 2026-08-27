@@ -135,6 +135,8 @@ export const removeUserByClerkUserId = mutation({
   },
 })
 
+// TODO: fix webhook [CONVEX H(POST /clerk-users-webhook)] Uncaught SyntaxError: "[object Object]" is not valid JSON  at parse [as parse] (<anonymous>)
+
 export const handleUserClerkWebhook = httpAction(async (ctx, request) => {
   const identity = await ctx.auth.getUserIdentity()
   const response = await request.json()
