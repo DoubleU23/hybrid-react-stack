@@ -26,7 +26,7 @@ import { articleValidator } from "./schema"
   export const getArticles = query({
     args: {},
     handler: async (ctx) => {
-      const articles = await ctx.db.query("articles").collect();
+      const articles = await ctx.db.query("articles").order('desc').collect();
 
       return await Promise.all(
         articles.map(async (article) => {
