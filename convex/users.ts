@@ -139,33 +139,23 @@ export const removeUserByClerkUserId = mutation({
 export const handleUserClerkWebhook = httpAction(async (ctx, request) => {
   const identity = await ctx.auth.getUserIdentity()
   const response = await request.json()
+ const { type, data } = response
+
+  // 1. Handle deletion early to avoid parsing missing fields
+  if (type === 'user.deleted') {
+    const dbResult = await ctx.runMutation(api.users.removeUserByClerkUserId, {
+      clerk_user_id: data.id
+    })
+    return new Response(null, { status: 200 })
+  }
 
   const {
-    type,
-    data: {
-      id,
-      clerk_user_id,
-      username,
-      created_at,
-      updated_at,
-      email_addresses,
-      primary_email_address_id,
-      phone_numbers,
-      image_url,
-      last_active_at,
-      last_sign_in_at,
-      first_name,
-      last_name,
-      locale,
-      locked,
-      banned,
-      private_metadata,
-      public_metadata,
-    },
-    event_attributes: {
-      http_request: { client_ip },
-    },
-  } = response
+    id, username, created_at, updated_at, email_addresses,
+    primary_email_address_id, phone_numbers, image_url,
+    last_active_at, last_sign_in_at, first_name, last_name,
+    locale, locked, banned, private_metadata, public_metadata
+  } = data
+   const client_ip = response.event_attributes?.http_request?.client_ip || ''
 
   let primary_email_address: string = ''
   if (Array.isArray(email_addresses)) {
@@ -181,7 +171,7 @@ export const handleUserClerkWebhook = httpAction(async (ctx, request) => {
 
   let dbResult: DBResult = { success: true }
   const userObject: UserObject = {
-    clerk_user_id: id || clerk_user_id,
+    clerk_user_id: id,
     created_at: created_at || Date.now(),
     updated_at: updated_at || Date.now(),
     role,
@@ -205,8 +195,6 @@ export const handleUserClerkWebhook = httpAction(async (ctx, request) => {
     dbResult = await ctx.runMutation(api.users.addUser, { user: userObject })
   } else if (type === 'user.updated') {
     dbResult = await ctx.runMutation(api.users.updateUserByClerkId, { user: userObject })
-  } else if (type === 'user.deleted') {
-    dbResult = await ctx.runMutation(api.users.removeUserByClerkUserId, { clerk_user_id: id })
   }
 
   if (!dbResult.success) console.log('dbResult.error :>> ', dbResult?.msg)
