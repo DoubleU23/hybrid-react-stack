@@ -208,7 +208,7 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
             <InputFileUpload
               fieldName={String(field.name)}
               label={field.label}
-              onFieldChange={(name, val) => handleChange(field.name, val)}
+              onFieldChange={(name, val) => handleChange(name, val)}
               {...field.addProps}
             />
             <FormHelperText error={hasError}>{hasError ? errorText : displayName}</FormHelperText>
