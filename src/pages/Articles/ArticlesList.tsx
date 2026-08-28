@@ -81,9 +81,12 @@ export default function ArticleList(params: object) {
                     alt={subtitle}
                   />
                   <CardContent sx={{ minHeight: '100%' }}>
-                    <Typography gutterBottom variant='h5' component='div'>
+                    <Typography variant='h5' component='div'>
                       {title}
                     </Typography>
+                    <Typography gutterBottom variant='h6' sx={{ m:0, color: 'text.secondary' }}>
+                      {subtitle.substring(0, 200) + '...'}<br/>
+                      </Typography>
                     <Typography variant='body2' sx={{ color: 'text.secondary' }}>
                       {text.substring(0, 200) + '...'}
                     </Typography>
