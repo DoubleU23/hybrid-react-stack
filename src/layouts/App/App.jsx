@@ -1,15 +1,16 @@
 import { Outlet } from 'react-router'
-import { useNavigate } from 'react-router-dom';
-import AppHeader from './AppHeader';
+import AppFooter from '../AppFooter'
+import AppHeader from './AppHeader'
 import './App.css'
 
 function App() {
   return (
     <>
       <AppHeader />
-    <div id='app-wrapper'>
-      <Outlet />
-    </div>
+      <div id='app-wrapper'>
+        <Outlet />
+      </div>
+      <AppFooter />
     </>
   )
 }
