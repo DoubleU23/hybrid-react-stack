@@ -24,7 +24,7 @@ import { NavLink } from 'react-router'
 //     </NavLink>
 // ))}
 
-interface FooterPages {
+interface FooterLinks {
   title: string
   path: string
   Icon: ElementType
@@ -88,7 +88,7 @@ export default function AppHeader() {
                 onClose={handleCloseNavMenu}
                 sx={{ display: { xs: 'block', md: 'none' } }}
               >
-                {pages.map(({title, path, Icon}: FooterPages): ReactElement => (
+                {pages.map(({title, path, Icon}: FooterLinks): ReactElement => (
                     <MenuItem key={title.toLowerCase()} onClick={handleCloseNavMenu}>
                       <Typography sx={{ textAlign: 'center' }}>
                         <NavLink to={path} className={({ isActive }) => (isActive ? ' active' : '')}>
@@ -106,7 +106,7 @@ export default function AppHeader() {
                     spacing={2}
                     sx={{ justifyContent: "center", alignItems: "center" }}
                 >
-                    {pages.map(({ title, path, Icon }: FooterPages): ReactElement => (
+                    {pages.map(({ title, path, Icon }: FooterLinks): ReactElement => (
                     <Button sx={{ textAlign: 'center' }} key={path}>
                         <Icon />
                         <NavLink to={path} className={({ isActive }) => (isActive ? ' active' : '')}>

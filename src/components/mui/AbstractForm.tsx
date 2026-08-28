@@ -18,9 +18,19 @@ import {
 import Grid from '@mui/material/Grid' // Empfohlen für MUI v6
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import type {Dayjs} from 'dayjs'
+import StarterKit from '@tiptap/starter-kit'
+import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
-import React from 'react'
+import {
+  MenuButtonBold,
+  MenuButtonItalic,
+  MenuControlsContainer,
+  MenuDivider,
+  MenuSelectHeading,
+  RichTextEditor,
+  type RichTextEditorRef,
+} from 'mui-tiptap'
+import React, { useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import InputFileUpload from './InputFileUpload'
 
@@ -98,6 +108,8 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
     navigate(backButtonPath ?? defaultBackButtonPath)
   }, [navigate, backButtonPath, defaultBackButtonPath])
 
+  const rteRef = useRef<RichTextEditorRef>(null)
+
   const renderField = (field: FieldConfig<T>) => {
     const value = formValues[field.name]
     const errorText = formErrors[field.name]
@@ -120,7 +132,24 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
         )
       case 'textarea':
         return (
-          <TextareaAutosize
+          <RichTextEditor
+            className='RichTextEditor'
+            ref={rteRef}
+            extensions={[StarterKit]} // Or any Tiptap extensions you wish!
+            content="<p>Hello world</p>" // Initial content for the editor
+            // Optionally include `renderControls` for a menu-bar atop the editor:
+            renderControls={() => (
+              <MenuControlsContainer>
+                {/* <MenuSelectHeading /> */}
+                <MenuDivider />
+                <MenuButtonBold />
+                <MenuButtonItalic />
+                {/* Add more controls of your choosing here */}
+              </MenuControlsContainer>
+            )}
+          />
+
+          /* <TextareaAutosize
             name={String(field.name)}
             value={
               value ??
@@ -131,7 +160,9 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
             minRows={3}
             style={{ minHeight: '100px', width: '100%' }}
             {...field.addProps}
-          />
+          /> */
+
+
         )
       case 'checkbox':
         return (

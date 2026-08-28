@@ -48,10 +48,7 @@ export default function ArticleList(params: object) {
     <PageContainer
       maxWidth='lg'
       title='Articles'
-      breadcrumbs={[
-        { title: 'Home', path: '/' },
-        { title: 'Articles', path: '/articles' },
-      ]}
+      breadcrumbs={[{ title: 'Home', path: '/' }]}
     >
       <Grid container spacing={3} sx={{ width: '100%' }}>
         {articles.map(({ title, subtitle, author, img_url, text, _id }: ArticleDbQuery, index: number) => {
