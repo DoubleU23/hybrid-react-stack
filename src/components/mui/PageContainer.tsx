@@ -51,14 +51,29 @@ export default function PageContainer(props: PageContainerProps) {
   const { children, breadcrumbs, title, actions = null } = props
 
   return (
-    <Container sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+    <Container
+      sx={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column', // minHeight: '100vh',
+        '& > div': {
+          pb: '10 0px',
+        },
+      }}
+    >
       <Stack sx={{ flex: 1, my: 2 }} spacing={2}>
         <Stack>
           <PageHeaderBreadcrumbs aria-label='breadcrumb' separator={<NavigateNextRoundedIcon fontSize='small' />}>
             {breadcrumbs
-              ? breadcrumbs.map((breadcrumb, index:number) => {
+              ? breadcrumbs.map((breadcrumb, index: number) => {
                   return breadcrumb.path ? (
-                    <MuiLink key={`${breadcrumb.title}Link`} component={Link} underline='hover' color='inherit' to={breadcrumb.path}>
+                    <MuiLink
+                      key={`${breadcrumb.title}Link`}
+                      component={Link}
+                      underline='hover'
+                      color='inherit'
+                      to={breadcrumb.path}
+                    >
                       {breadcrumb.title}
                     </MuiLink>
                   ) : (

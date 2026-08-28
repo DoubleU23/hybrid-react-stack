@@ -1,3 +1,5 @@
+import PageContainer from 'src/components/mui/PageContainer'
+
 export default function NotFound() {
-  return <div>404 Page Not Found</div>
+  return <PageContainer>404 Page Not Found</PageContainer>
 }

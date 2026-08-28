@@ -1,12 +1,9 @@
 import { Show, UserButton } from '@clerk/react'
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail'
 import LinkIcon from '@mui/icons-material/Link'
-// import AdbIcon from '@mui/icons-material/Adb'
-// import Avatar from '@mui/material/Avatar'
-// import Tooltip from '@mui/material/Tooltip'
 import MenuIcon from '@mui/icons-material/Menu'
 import YouTubeIcon from '@mui/icons-material/YouTube'
-import { AppBar, Stack } from '@mui/material'
+import { Stack } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
@@ -18,107 +15,71 @@ import Typography from '@mui/material/Typography'
 import { type ElementType, type ReactElement, useState } from 'react'
 import { NavLink } from 'react-router'
 
-// {AppLayoutRoutes.children.map(({ name, path }) => (
-//     <NavLink key={`NavLinkTo${name}`} to={path} className={({ isActive }) => (isActive ? ' active' : '')}>
-//     {name?.toUpperCase()}
-//     </NavLink>
-// ))}
-
 interface FooterLinks {
   title: string
   path: string
   Icon: ElementType
 }
+
 const pages = [
   { title: 'Impressum', path: '/impressum', Icon: LinkIcon },
-  { title: 'Instagram', path: 'https://www.instagram.com/team_mischkonsum/', Icon: AlternateEmailIcon },
-  { title: 'Youtube', path: 'https://www.youtube.com/@team_mischkonsum', Icon: YouTubeIcon },
+  { title: 'Instagram', path: 'https://instagram.com', Icon: AlternateEmailIcon },
+  { title: 'Youtube', path: 'https://youtube.com', Icon: YouTubeIcon },
 ]
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
 
-export default function AppHeader() {
-  const [anchorElNav, setAnchorElNav] = useState(null)
-  const [anchorElUser, setAnchorElUser] = useState(null)
-  // const AppLayoutRoutes = AppRoutes[0].children[0]
-
-  const handleOpenNavMenu = (event:any) => {
-    setAnchorElNav(event.currentTarget)
-  }
-  const handleOpenUserMenu = (event:any) => {
-    setAnchorElUser(event.currentTarget)
-  }
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null)
-  }
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null)
-  }
-
+export default function AppFooter() {
   return (
-    <div id='appHeader'>
-      <AppBar position='static' sx={{position:'absolute', bottom: 0}}>
-        <Container maxWidth='xl' sx={{justifyItems:'center'}}>
-          <Toolbar disableGutters>
-            {/* <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-               <IconButton
-                size='large'
-                aria-label='account of current user'
-                aria-controls='menu-appbar'
-                aria-haspopup='true'
-                onClick={handleOpenNavMenu}
-                color='inherit'
-              >
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id='menu-appbar'
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-                sx={{ display: { xs: 'block', md: 'none' } }}
-              >
-                {pages.map(({title, path, Icon}: FooterLinks): ReactElement => (
-                    <MenuItem key={title.toLowerCase()} onClick={handleCloseNavMenu}>
-                      <Typography sx={{ textAlign: 'center' }}>
-                        <NavLink to={path} className={({ isActive }) => (isActive ? ' active' : '')}>
-                          <Icon /> {title}
-                        </NavLink>
-                      </Typography>
-                    </MenuItem>
-                  ),
-                )}
-              </Menu>
-            </Box> */}
-           <Box sx={{ flexGrow: 1, display: { xs: 'flex' } }}>
-                <Stack
-                    direction={{ xs: 'column', sm: 'row' }}
-                    spacing={2}
-                    sx={{ justifyContent: "center", alignItems: "center" }}
-                >
-                    {pages.map(({ title, path, Icon }: FooterLinks): ReactElement => (
-                    <Button sx={{ textAlign: 'center' }} key={path}>
-                        <Icon />
-                        <NavLink to={path} className={({ isActive }) => (isActive ? ' active' : '')}>
-                        {title}
-                        </NavLink>
-                    </Button>
-                    ))}
-                </Stack>
-                </Box>
-          </Toolbar>
-        </Container>
-      </AppBar>
-    </div>
+    <Box
+      component='footer'
+      id='appFooter'
+      sx={{
+        width: '100%',
+        backgroundColor: 'background.paper',
+        borderTop: 1,
+        borderColor: 'divider',
+        py: 1,
+
+        // SWITCH TO FIXED TO LOCK IT REGARDLESS OF NESTED ELEMENTS
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        zIndex: 1100,
+      }}
+    >
+      <Container maxWidth='xl'>
+        <Toolbar disableGutters sx={{ justifyContent: 'center', minHeight: 'auto' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              spacing={2}
+              sx={{ justifyContent: 'center', alignItems: 'center' }}
+            >
+              {pages.map(
+                ({ title, path, Icon }: FooterLinks): ReactElement => (
+                  <Button
+                    key={path}
+                    sx={{
+                      textAlign: 'center',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1,
+                    }}
+                  >
+                    <Icon fontSize='small' />
+                    <NavLink
+                      to={path}
+                      className={({ isActive }) => (isActive ? ' active' : '')}
+                      style={{ textDecoration: 'none', color: 'inherit' }}
+                    >
+                      {title}
+                    </NavLink>
+                  </Button>
+                ),
+              )}
+            </Stack>
+          </Box>
+        </Toolbar>
+      </Container>
+    </Box>
   )
 }
