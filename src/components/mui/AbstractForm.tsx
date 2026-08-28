@@ -152,6 +152,8 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
             <InputLabel id={`${String(field.name)}-label`}>{field.label}</InputLabel>
             <Select
               value={value ?? ''}
+              defaultValue={value}
+              disabled={value === 'admin'}
               onChange={e => handleChange(field.name, e.target.value)}
               labelId={`${String(field.name)}-label`}
               name={String(field.name)}
