@@ -10,7 +10,7 @@ export const emailAddressesValidator = v.array(
     object: v.string(),
     email_address: v.string(),
     reserved: v.boolean(),
-    matches_sso_connection: v.boolean(),
+    matches_sso_connection: v.boolean(), 
     created_at: v.number(),
     updated_at: v.number(),
   }),
