@@ -84,7 +84,8 @@
   "devDependencies": {
     "@biomejs/biome": "^2.5.8",
     "cross-env": "^10.1.0",
-    "serve": "^14.2.6"
+    "serve": "^14.2.6",
+    "vercel": "^59.9.1"
   },
   "scripts": {
     "start": "npx cross-env NODE_ENV=development  node scripts/start.js",

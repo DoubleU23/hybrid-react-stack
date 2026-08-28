@@ -1,9 +1,9 @@
 import { api } from '@convex/api'
 import { useMutation } from 'convex/react'
 import { useCallback, useEffect, useState } from 'react'
-import type { FieldConfig, FormState } from 'src/components/mui/AbstractForm'
-import AbstractForm from 'src/components/mui/AbstractForm'
 import type { Doc } from '../../../../convex/_generated/dataModel'
+import type { FieldConfig, FormState } from '../../../components/mui/AbstractForm'
+import AbstractForm from '../../../components/mui/AbstractForm'
 
 // Nutze den offiziell generierten Datenbank-Typen für Konsistenz
 export type ArticleObject = Doc<'articles'>

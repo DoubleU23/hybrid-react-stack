@@ -16,7 +16,7 @@ import Typography from '@mui/material/Typography'
 import  * as React from 'react'
 import { NavLink } from 'react-router'
 
-import AppRoutes from 'src/routes'
+import AppRoutes from '../../routes'
 
 // {AppLayoutRoutes.children.map(({ name, path }) => (
 //     <NavLink key={`NavLinkTo${name}`} to={path} className={({ isActive }) => (isActive ? ' active' : '')}>
