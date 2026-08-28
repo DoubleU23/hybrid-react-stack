@@ -4,9 +4,9 @@ import { Box, CircularProgress } from '@mui/material'
 import { useMutation, useQuery } from 'convex/react'
 import * as React from 'react'
 import { useNavigate } from 'react-router'
+import type { ArticleObject } from '../../../../convex/schema'
 import PageContainer from '../../../components/mui/PageContainer'
 import useNotifications from '../../../hooks/useNotifications/useNotifications'
-import type { ArticleObject } from './ArticleForm'
 import ArticleForm from './ArticleForm'
 
 export default function ArticleCreate() {

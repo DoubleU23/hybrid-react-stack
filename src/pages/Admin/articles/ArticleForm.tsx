@@ -1,12 +1,10 @@
 import { api } from '@convex/api'
 import { useMutation } from 'convex/react'
 import { useCallback, useEffect, useState } from 'react'
-import type { Doc } from '../../../../convex/_generated/dataModel'
+import type { ArticleObject } from '../../../../convex/schema'
 import type { FieldConfig, FormState } from '../../../components/mui/AbstractForm'
 import AbstractForm from '../../../components/mui/AbstractForm'
-
 // Nutze den offiziell generierten Datenbank-Typen für Konsistenz
-export type ArticleObject = Doc<'articles'>
 
 // Lokaler Formular-Typ, der temporär Datei-Objekte im UI-State erlaubt
 export interface ArticleFormValues extends Omit<ArticleObject, 'img_url'> {
