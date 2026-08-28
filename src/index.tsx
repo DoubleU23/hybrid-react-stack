@@ -8,6 +8,8 @@ import AppRoutes from './routes'
 
 const router = createBrowserRouter(AppRoutes)
 
+console.log('REACT_TEST_ENV_VAR :>> ', process.env.PUBLIC_CLERK_PUBLISHABLE_KEY);
+
 createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <RouterProvider router={router} />

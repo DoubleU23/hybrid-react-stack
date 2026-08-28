@@ -175,6 +175,8 @@ module.exports = webpackEnv => {
     return loaders
   }
 
+  console.log('resolve.extensions:>> ', paths.moduleFileExtensions.map(ext => `.${ext}`).filter(ext => useTypeScript || !ext.includes('ts')));
+
   return {
     target: ['browserslist'],
     // Webpack noise constrained to errors and warnings

@@ -1,7 +1,7 @@
 // TODO: add user.updated and doublecheck user fields needed + use UserObject interface
 
+import { paginationOptsValidator } from 'convex/server'
 import { v } from 'convex/values'
-import { paginationOptsValidator } from "convex/server";
 import { api } from './_generated/api'
 import { httpAction, mutation, query } from './_generated/server'
 import type { DBResult, EmailAddress, UserObject } from './schema'
@@ -21,10 +21,9 @@ export const getUsersPaginated = query({
     paginationOpts: paginationOptsValidator,
   },
   handler: async (ctx, args) => {
-    return await ctx.db.query('users').order('desc').paginate(args.paginationOpts);
+    return await ctx.db.query('users').order('desc').paginate(args.paginationOpts)
   },
-});
-
+})
 
 export const getUsersFiltered = query({
   args: {
@@ -35,24 +34,24 @@ export const getUsersFiltered = query({
   },
   handler: async (ctx, args) => {
     // 1. Fetch the base dataset ordered chronologically
-    let result = await ctx.db.query("users").order("desc").paginate(args.paginationOpts);
+    const result = await ctx.db.query('users').order('desc').paginate(args.paginationOpts)
     // 3. Apply the custom targeted dynamic column filter
     if (args.filterField && args.filterValue) {
-      const matchVal = args.filterValue.toLowerCase();
+      const matchVal = args.filterValue.toLowerCase()
 
-      result.page = result.page.filter((user) => {
+      result.page = result.page.filter(user => {
         // Fixed: Cast the key dynamically to match the keys of a single user object record
-        const fieldKey = args.filterField as keyof typeof user;
-        const userValue = user[fieldKey];
+        const fieldKey = args.filterField as keyof typeof user
+        const userValue = user[fieldKey]
 
-        if (userValue === undefined || userValue === null) return false;
-        return String(userValue).toLowerCase().includes(matchVal);
-      });
+        if (userValue === undefined || userValue === null) return false
+        return String(userValue).toLowerCase().includes(matchVal)
+      })
     }
 
-    return result;
+    return result
   },
-});
+})
 
 export const getCurrentUser = query({
   args: {},
@@ -172,8 +171,12 @@ export const handleUserClerkWebhook = httpAction(async (ctx, request) => {
     if (email.id === primary_email_address_id) primary_email_address = email.email_address
   })
 
-  const role = JSON.parse(public_metadata).role || 'user'
-  if (!public_metadata.role) public_metadata.role = role
+  // ✅ 1. Read directly from the object instead of parsing it
+  const role = public_metadata?.role || 'user'
+
+  // ✅ 2. Construct clean metadata strings to feed into your userObject
+  // without mutating the immutable request package parameters
+  const finalPublicMetadata = { ...public_metadata, role }
 
   let dbResult: DBResult = { success: true }
   const userObject: UserObject = {
@@ -188,8 +191,8 @@ export const handleUserClerkWebhook = httpAction(async (ctx, request) => {
     phone_number: phone_numbers?.phone_number || '',
     locale: locale || 'de-DE',
     profile_image_url: image_url,
-    private_metadata: JSON.stringify(private_metadata),
-    public_metadata: JSON.stringify(public_metadata),
+    private_metadata: JSON.stringify(private_metadata || {}),
+    public_metadata: JSON.stringify(finalPublicMetadata),
     last_active_at: last_active_at || Date.now(),
     last_sign_in_at: last_sign_in_at || created_at || Date.now(),
     client_ip,
