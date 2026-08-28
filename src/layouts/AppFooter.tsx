@@ -6,7 +6,7 @@ import LinkIcon from '@mui/icons-material/Link'
 // import Tooltip from '@mui/material/Tooltip'
 import MenuIcon from '@mui/icons-material/Menu'
 import YouTubeIcon from '@mui/icons-material/YouTube'
-import { AppBar } from '@mui/material'
+import { AppBar, Stack } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
@@ -100,17 +100,22 @@ export default function AppHeader() {
                 )}
               </Menu>
             </Box> */}
-            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-               {pages.map(({title, path, Icon}: FooterPages): ReactElement => (
-                    <Button sx={{ textAlign: 'center' }} key={title.toLowerCase()}>
-                      <Icon />
-                      <NavLink to={path} className={({ isActive }) => (isActive ? ' active' : '')}>
+           <Box sx={{ flexGrow: 1, display: { xs: 'flex' } }}>
+                <Stack
+                    direction={{ xs: 'column', sm: 'row' }}
+                    spacing={2}
+                    sx={{ justifyContent: "center", alignItems: "center" }}
+                >
+                    {pages.map(({ title, path, Icon }: FooterPages): ReactElement => (
+                    <Button sx={{ textAlign: 'center' }} key={path}>
+                        <Icon />
+                        <NavLink to={path} className={({ isActive }) => (isActive ? ' active' : '')}>
                         {title}
-                      </NavLink>
+                        </NavLink>
                     </Button>
-                  ),
-              )}
-            </Box>
+                    ))}
+                </Stack>
+                </Box>
           </Toolbar>
         </Container>
       </AppBar>
