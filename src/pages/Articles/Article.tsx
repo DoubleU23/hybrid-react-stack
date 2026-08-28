@@ -58,7 +58,7 @@ export default function ArticleList(params: object) {
       ]}
     >
       <Grid container spacing={2} sx={{ width: '100%' }}>
-        <Grid size={{ xs: 12, md: 6, lg: 12 }} key={articleId}>
+        <Grid size={{ xs: 12, md: 12, lg: 12 }} key={articleId}>
           <Typography variant='h6' sx={{ mb: 1 }}>
             {article.subtitle}
           </Typography>
