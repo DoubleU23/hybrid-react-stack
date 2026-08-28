@@ -48,10 +48,7 @@ import MuiTypographyClass from './MuiTipTapTypographyClass'
 
 const ThemeBoundEditorWrapper = styled('div')(({ theme }) => ({
   width: '100%',
-  '& .tiptap.ProseMirror': {
-    '& .MuiTypography-caption': {
-      ...theme.typography.caption,
-    },
+  '& .tiptap.ProseMirror': {  
     '& .MuiTypography-h3': {
       ...theme.typography.h3,
     },
@@ -60,6 +57,18 @@ const ThemeBoundEditorWrapper = styled('div')(({ theme }) => ({
     },
     '& .MuiTypography-h5': {
       ...theme.typography.h5,
+    },
+    '& .MuiTypography-subtitle1': {
+      ...theme.typography.subtitle1,
+    },
+    '& .MuiTypography-subtitle2': {
+      ...theme.typography.subtitle2,
+    },
+    '& .MuiTypography-button': {
+      ...theme.typography.button
+    },
+    '& .MuiTypography-caption': {
+      ...theme.typography.caption,
     },
     '& .MuiTypography-body1': {
       ...theme.typography.body1,
@@ -189,7 +198,7 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
                 LinkBubbleMenuHandler,
                 TextStyleKit,
                 MuiTypographyClass,
-                HeadingExtension.configure({ levels: [3, 4, 5] }),
+                HeadingExtension.configure({ levels: [3, 4, 5, 6] }),
               ]}
               content={value ?? ''}
               onUpdate={({ editor }) => {
@@ -230,9 +239,13 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
                       }}
                     >
                       <MenuItem value=''>Normal</MenuItem>
-                      <MenuItem value='MuiTypography-caption'>Small</MenuItem>
+                      <MenuItem value=''>normal</MenuItem>
                       <MenuItem value='MuiTypography-body1'>body1</MenuItem>
                       <MenuItem value='MuiTypography-body2'>body2</MenuItem>
+                      <MenuItem value='MuiTypography-subtitle1'>subtitle1</MenuItem>
+                      <MenuItem value='MuiTypography-subtitle2'>subtitle2</MenuItem>
+                      <MenuItem value='MuiTypography-caption'>small</MenuItem>
+                      <MenuItem value='MuiTypography-button'>capitalized</MenuItem>
                     </Select>
 
                     <MenuButtonBold />
