@@ -144,6 +144,7 @@ export const handleUserClerkWebhook = httpAction(async (ctx, request) => {
     type,
     data: {
       id,
+      clerk_user_id,
       username,
       created_at,
       updated_at,
@@ -180,7 +181,7 @@ export const handleUserClerkWebhook = httpAction(async (ctx, request) => {
 
   let dbResult: DBResult = { success: true }
   const userObject: UserObject = {
-    clerk_user_id: id,
+    clerk_user_id: id || clerk_user_id,
     created_at: created_at || Date.now(),
     updated_at: updated_at || Date.now(),
     role,
@@ -205,7 +206,7 @@ export const handleUserClerkWebhook = httpAction(async (ctx, request) => {
   } else if (type === 'user.updated') {
     dbResult = await ctx.runMutation(api.users.updateUserByClerkId, { user: userObject })
   } else if (type === 'user.deleted') {
-    dbResult = await ctx.runMutation(api.users.removeUserByClerkUserId, { clerk_user_id: id })
+    dbResult = await ctx.runMutation(api.users.removeUserByClerkUserId, { clerk_user_id })
   }
 
   if (!dbResult.success) console.log('dbResult.error :>> ', dbResult?.msg)
