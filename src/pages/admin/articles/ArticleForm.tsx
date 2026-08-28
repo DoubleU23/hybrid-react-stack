@@ -1,10 +1,9 @@
-import * as React from 'react'
+import { api } from '@convex/api'
+import { useMutation } from 'convex/react'
 import { useCallback, useEffect, useState } from 'react'
 import type { FieldConfig, FormState } from 'src/components/mui/AbstractForm'
 import AbstractForm from 'src/components/mui/AbstractForm'
-import { useMutation } from 'convex/react'
-import { api } from '@convex/api'
-import type { Doc } from 'convex/_generated/dataModel'
+import type { Doc } from '../../../../convex/_generated/dataModel'
 
 // Nutze den offiziell generierten Datenbank-Typen für Konsistenz
 export type ArticleObject = Doc<'articles'>
@@ -41,10 +40,10 @@ export function validateArticle(article: Partial<ArticleFormValues>): Validation
 const articleFields: FieldConfig<ArticleFormValues>[] = [
   { name: 'title', label: 'Title', type: 'text', gridSize: { xs: 12, sm: 6 } },
   { name: 'subtitle', label: 'Subtitle', type: 'text', gridSize: { xs: 12, sm: 6 } },
-  { name: 'author', label: 'Author', type: 'text', gridSize: { xs: 12, sm: 6 }, addProps: {disabled: true} },
+  { name: 'author', label: 'Author', type: 'text', gridSize: { xs: 12, sm: 6 }, addProps: { disabled: true } },
   { name: 'created_at', label: 'Created At', type: 'date', gridSize: { xs: 12, sm: 6 } },
   { name: 'img_url', label: 'Upload Article Image', type: 'file', gridSize: { xs: 12 } },
-  { name: 'text', label: 'Article Content', type: 'textarea', gridSize: { xs: 12 }, addProps: {multiline: true} },
+  { name: 'text', label: 'Article Content', type: 'textarea', gridSize: { xs: 12 }, addProps: { multiline: true } },
 ]
 
 export interface ArticleFormProps {
@@ -54,13 +53,7 @@ export interface ArticleFormProps {
   backButtonPath?: string
 }
 
-export default function ArticleForm({
-  initialValues,
-  onSubmit,
-  submitButtonLabel,
-  backButtonPath,
-}: ArticleFormProps) {
-
+export default function ArticleForm({ initialValues, onSubmit, submitButtonLabel, backButtonPath }: ArticleFormProps) {
   const [formState, setFormState] = useState<FormState<ArticleFormValues>>({
     values: initialValues as any,
     errors: {},
@@ -73,7 +66,7 @@ export default function ArticleForm({
   const generateUploadUrl = useMutation(api.files.generateFileUploadUrl)
 
   const handleFieldChange = useCallback((name: keyof ArticleFormValues, value: any) => {
-    setFormState((prev) => {
+    setFormState(prev => {
       let cleanValue = value
 
       if (name === 'created_at' && value) {
@@ -85,7 +78,7 @@ export default function ArticleForm({
 
       const nextValues = { ...prev.values, [name]: cleanValue }
       const { issues } = validateArticle(nextValues)
-      const fieldIssue = issues.find((issue) => issue.path[0] === name)
+      const fieldIssue = issues.find(issue => issue.path[0] === name)
 
       return {
         values: nextValues,
@@ -106,23 +99,21 @@ export default function ArticleForm({
     const { issues } = validateArticle(currentValues)
 
     if (issues && issues.length > 0) {
-      const nextErrors = Object.fromEntries(
-        issues.map((issue) => [issue.path[0], issue.message])
-      ) as Partial<Record<keyof ArticleFormValues, string>>
+      const nextErrors = Object.fromEntries(issues.map(issue => [issue.path[0], issue.message])) as Partial<
+        Record<keyof ArticleFormValues, string>
+      >
 
-      setFormState((prev) => ({ ...prev, errors: nextErrors }))
+      setFormState(prev => ({ ...prev, errors: nextErrors }))
       return
     }
 
-    setFormState((prev) => ({ ...prev, errors: {} }))
+    setFormState(prev => ({ ...prev, errors: {} }))
 
     try {
       let finalImgUrl: string | null = typeof currentValues.img_url === 'string' ? currentValues.img_url : null
 
       if (currentValues.img_url instanceof FileList || currentValues.img_url instanceof File) {
-        const targetFile = currentValues.img_url instanceof FileList
-          ? currentValues.img_url[0]
-          : currentValues.img_url
+        const targetFile = currentValues.img_url instanceof FileList ? currentValues.img_url[0] : currentValues.img_url
 
         if (targetFile) {
           const uploadUrl = await generateUploadUrl()
@@ -148,11 +139,10 @@ export default function ArticleForm({
       } as ArticleObject
 
       await onSubmit(finalizedPayload)
-
     } catch (uploadError) {
       console.error('File storage upload error:', uploadError)
 
-      setFormState((prev) => ({
+      setFormState(prev => ({
         ...prev,
         errors: {
           ...prev.errors,
@@ -171,7 +161,7 @@ export default function ArticleForm({
       onReset={handleReset}
       submitButtonLabel={submitButtonLabel}
       backButtonPath={backButtonPath}
-      defaultBackButtonPath="/admin/articles"
+      defaultBackButtonPath='/admin/articles'
     />
   )
 }
