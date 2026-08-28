@@ -168,15 +168,15 @@ export const handleUserClerkWebhook = httpAction(async (ctx, request) => {
   } = response
 
   let primary_email_address: string = ''
-  email_addresses.forEach((email: EmailAddress) => {
-    if (email.id === primary_email_address_id) primary_email_address = email.email_address
-  })
+  if (Array.isArray(email_addresses)) {
+    email_addresses.forEach((email: EmailAddress) => {
+      if (email.id === primary_email_address_id) {
+        primary_email_address = email.email_address
+      }
+    })
+  }
 
-  // ✅ 1. Read directly from the object instead of parsing it
   const role = public_metadata?.role || 'user'
-
-  // ✅ 2. Construct clean metadata strings to feed into your userObject
-  // without mutating the immutable request package parameters
   const finalPublicMetadata = { ...public_metadata, role }
 
   let dbResult: DBResult = { success: true }
@@ -206,7 +206,7 @@ export const handleUserClerkWebhook = httpAction(async (ctx, request) => {
   } else if (type === 'user.updated') {
     dbResult = await ctx.runMutation(api.users.updateUserByClerkId, { user: userObject })
   } else if (type === 'user.deleted') {
-    dbResult = await ctx.runMutation(api.users.removeUserByClerkUserId, { clerk_user_id })
+    dbResult = await ctx.runMutation(api.users.removeUserByClerkUserId, { clerk_user_id: id })
   }
 
   if (!dbResult.success) console.log('dbResult.error :>> ', dbResult?.msg)
