@@ -4,7 +4,7 @@ import {
   CircularProgress,
   Divider,
   Grid,
-/*   Button,
+  /*   Button,
   Card,
   CardActionArea,
   CardActions,
@@ -63,8 +63,8 @@ export default function ArticleList(params: object) {
             {article.subtitle}
           </Typography>
           <Divider sx={{ mb: 5 }} />
-          <ImageBox src={article.img_url} height='200px' width='100%' />
-          <Typography variant='body1'>{article.text}</Typography>
+          <ImageBox src={article.img_url || 'https://placehold.co/1150x300'} height='300px' width='100%' />
+          <div dangerouslySetInnerHTML={{ __html: article.text }} />
         </Grid>
       </Grid>
     </PageContainer>

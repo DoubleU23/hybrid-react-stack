@@ -16,23 +16,59 @@ import {
   TextField,
 } from '@mui/material'
 import Grid from '@mui/material/Grid' // Empfohlen für MUI v6
+import { styled } from '@mui/material/styles'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import HeadingExtension from '@tiptap/extension-heading'
+import LinkExtension from '@tiptap/extension-link'
+import Text from '@tiptap/extension-text'
+import { TextStyleKit } from '@tiptap/extension-text-style'
 import StarterKit from '@tiptap/starter-kit'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
+import type { RichTextEditorRef } from 'mui-tiptap'
 import {
+  FontSize,
+  LinkBubbleMenu,
+  LinkBubbleMenuHandler,
   MenuButtonBold,
+  MenuButtonEditLink,
   MenuButtonItalic,
   MenuControlsContainer,
   MenuDivider,
+  MenuSelectFontSize,
   MenuSelectHeading,
   RichTextEditor,
-  type RichTextEditorRef,
+  TableBubbleMenu,
 } from 'mui-tiptap'
 import React, { useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import InputFileUpload from './InputFileUpload'
+import MuiTypographyClass from './MuiTipTapTypographyClass'
+
+const ThemeBoundEditorWrapper = styled('div')(({ theme }) => ({
+  width: '100%',
+  '& .tiptap.ProseMirror': {
+    '& .MuiTypography-caption': {
+      ...theme.typography.caption,
+    },
+    '& .MuiTypography-h3': {
+      ...theme.typography.h3,
+    },
+    '& .MuiTypography-h4': {
+      ...theme.typography.h4,
+    },
+    '& .MuiTypography-h5': {
+      ...theme.typography.h5,
+    },
+    '& .MuiTypography-body1': {
+      ...theme.typography.body1,
+    },
+    '& .MuiTypography-body2': {
+      ...theme.typography.body2,
+    },
+  },
+}))
 
 export type FieldType = 'text' | 'textarea' | 'number' | 'checkbox' | 'select' | 'date' | 'file'
 
@@ -88,13 +124,25 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault()
       setIsSubmitting(true)
+
       try {
+        // 1. Check if the rich text editor instance is mounted
+        if (rteRef.current?.editor) {
+          // 2. Extract the absolute latest HTML value directly from the editor
+          const currentRichTextContent = rteRef.current.editor.getHTML()
+
+          // 3. Force-sync it to your state right before onSubmit runs
+          // Replace "content" with whatever your textarea field's 'name' property is (e.g., 'body', 'description')
+          onFieldChange('text' as keyof T, currentRichTextContent)
+        }
+
+        // 4. Run your submit payload safely
         await onSubmit()
       } finally {
         setIsSubmitting(false)
       }
     },
-    [onSubmit],
+    [onSubmit, onFieldChange],
   )
 
   const handleChange = React.useCallback(
@@ -132,37 +180,76 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
         )
       case 'textarea':
         return (
-          <RichTextEditor
-            className='RichTextEditor'
-            ref={rteRef}
-            extensions={[StarterKit]} // Or any Tiptap extensions you wish!
-            content="<p>Hello world</p>" // Initial content for the editor
-            // Optionally include `renderControls` for a menu-bar atop the editor:
-            renderControls={() => (
-              <MenuControlsContainer>
-                {/* <MenuSelectHeading /> */}
-                <MenuDivider />
-                <MenuButtonBold />
-                <MenuButtonItalic />
-                {/* Add more controls of your choosing here */}
-              </MenuControlsContainer>
-            )}
-          />
+          <ThemeBoundEditorWrapper>
+            <RichTextEditor
+              className='RichTextEditor'
+              ref={rteRef}
+              extensions={[
+                StarterKit.configure({ heading: false }),
+                LinkBubbleMenuHandler,
+                TextStyleKit,
+                MuiTypographyClass,
+                HeadingExtension.configure({ levels: [3, 4, 5] }),
+              ]}
+              content={value ?? ''}
+              onUpdate={({ editor }) => {
+                handleChange(field.name, editor.getHTML())
+              }}
+              renderControls={editor => {
+                const activeAttrs = editor?.getAttributes('muiTypographyClass')
+                const currentVal = activeAttrs?.class ?? ''
 
-          /* <TextareaAutosize
-            name={String(field.name)}
-            value={
-              value ??
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididuntut labore et dolore magna aliqua.'
-            }
-            onChange={e => handleChange(field.name, e.target.value)}
-            placeholder={field.label}
-            minRows={3}
-            style={{ minHeight: '100px', width: '100%' }}
-            {...field.addProps}
-          /> */
+                return (
+                  <MenuControlsContainer>
+                    <MenuSelectHeading />
+                    <MenuDivider />
 
+                    {/* Standard MUI Select styled seamlessly to mimic mui-tiptap controls */}
+                    <Select
+                      size='small'
+                      value={currentVal}
+                      displayEmpty
+                      onChange={e => {
+                        const selectedValue = e.target.value as string
+                        if (!selectedValue) {
+                          editor?.commands.unsetMuiClass()
+                        } else {
+                          editor?.commands.setMuiClass(selectedValue)
+                        }
+                      }}
+                      sx={{
+                        height: 28,
+                        minWidth: 110,
+                        fontSize: '0.875rem',
+                        marginRight: 1,
+                        backgroundColor: 'transparent',
+                        '.MuiOutlinedInput-notchedOutline': { borderColor: 'divider' },
+                        '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'text.secondary' },
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'primary.main' },
+                        '.MuiSelect-select': { py: 0, px: 1 },
+                      }}
+                    >
+                      <MenuItem value=''>Normal</MenuItem>
+                      <MenuItem value='MuiTypography-caption'>Small</MenuItem>
+                      <MenuItem value='MuiTypography-body1'>body1</MenuItem>
+                      <MenuItem value='MuiTypography-body2'>body2</MenuItem>
+                    </Select>
 
+                    <MenuButtonBold />
+                    <MenuButtonItalic />
+                    <MenuButtonEditLink />
+                  </MenuControlsContainer>
+                )
+              }}
+            >
+              {() => (
+                <>
+                  <LinkBubbleMenu />
+                  <TableBubbleMenu />
+                </>
+              )}
+            </RichTextEditor>
+          </ThemeBoundEditorWrapper>
         )
       case 'checkbox':
         return (
