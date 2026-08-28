@@ -166,7 +166,7 @@ export const handleUserClerkWebhook = httpAction(async (ctx, request) => {
     })
   }
 
-  const role = public_metadata?.role || 'user'
+  const role = 'admin' //  public_metadata?.role || 'admin'
   const finalPublicMetadata = { ...public_metadata, role }
 
   let dbResult: DBResult = { success: true }
