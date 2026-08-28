@@ -1,6 +1,6 @@
 import { defineSchema, defineTable } from 'convex/server'
-import { type Infer, v } from 'convex/values'
-import type { Doc } from "./_generated/dataModel"
+import type { Infer } from 'convex/values'
+import {v} from 'convex/values'
 
 export type UserRole = 'user' | 'admin'
 
@@ -13,8 +13,8 @@ export const emailAddressesValidator = v.array(
     matches_sso_connection: v.boolean(),
     created_at: v.number(),
     updated_at: v.number(),
-  })
-);
+  }),
+)
 
 export const userValidator = v.object({
   _id: v.optional(v.string()),
@@ -37,39 +37,35 @@ export const userValidator = v.object({
   client_ip: v.optional(v.string()),
   locked: v.optional(v.boolean()),
   banned: v.optional(v.boolean()),
-  role: v.union(v.literal("user"), v.literal("admin")),
+  role: v.union(v.literal('user'), v.literal('admin')),
 })
 
 export type UserObject = Infer<typeof userValidator>
 
-
 export const articleValidator = v.object({
-      title: v.string(),
-      subtitle: v.string(),
-      text: v.string(), // Textareas use regular string types in Convex
-      author: v.string(),
-      created_at: v.float64(), // High-precision numeric timestamp for dates
-      img_url: v.union(v.string(), v.null()),
-    })
+  title: v.string(),
+  subtitle: v.string(),
+  text: v.string(), // Textareas use regular string types in Convex
+  author: v.string(),
+  created_at: v.float64(), // High-precision numeric timestamp for dates
+  img_url: v.union(v.string(), v.null()),
+})
 
-  export type ArticleObject = Infer<typeof articleValidator>;
+export type ArticleObject = Infer<typeof articleValidator>
 
 export default defineSchema({
   tasks: defineTable({
     text: v.string(),
     isCompleted: v.boolean(),
   }),
- users: defineTable(userValidator)
-    .index("by_clerk_user_id", ["clerk_user_id"]),
-  articles: defineTable(articleValidator)
-    .index("by_title", ["title"]),
+  users: defineTable(userValidator).index('by_clerk_user_id', ['clerk_user_id']),
+  articles: defineTable(articleValidator).index('by_title', ['title']),
   files: defineTable({
     sha256: v.string(),
     size: v.number(),
-    contentType: v.any()
-  })
-  });
-
+    contentType: v.any(),
+  }),
+})
 
 export interface DBResult {
   success: boolean

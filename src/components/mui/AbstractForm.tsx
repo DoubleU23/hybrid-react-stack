@@ -10,15 +10,16 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  TextareaAutosize,
   type SelectProps,
   Stack,
+  TextareaAutosize,
   TextField,
 } from '@mui/material'
 import Grid from '@mui/material/Grid' // Empfohlen für MUI v6
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import dayjs, { type Dayjs } from 'dayjs'
+import type {Dayjs} from 'dayjs'
+import dayjs from 'dayjs'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import InputFileUpload from './InputFileUpload'
@@ -121,11 +122,14 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
         return (
           <TextareaAutosize
             name={String(field.name)}
-            value={value ?? 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididuntut labore et dolore magna aliqua.'}
+            value={
+              value ??
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididuntut labore et dolore magna aliqua.'
+            }
             onChange={e => handleChange(field.name, e.target.value)}
             placeholder={field.label}
             minRows={3}
-            style={{minHeight: '100px', width: '100%'}}
+            style={{ minHeight: '100px', width: '100%' }}
             {...field.addProps}
           />
         )
@@ -148,7 +152,7 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
             <InputLabel id={`${String(field.name)}-label`}>{field.label}</InputLabel>
             <Select
               value={value ?? ''}
-              onChange={(e) => handleChange(field.name, e.target.value)}
+              onChange={e => handleChange(field.name, e.target.value)}
               labelId={`${String(field.name)}-label`}
               name={String(field.name)}
               label={field.label}
@@ -205,9 +209,7 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
               onFieldChange={(name, val) => handleChange(field.name, val)}
               {...field.addProps}
             />
-            <FormHelperText error={hasError}>
-              {hasError ? errorText : displayName}
-            </FormHelperText>
+            <FormHelperText error={hasError}>{hasError ? errorText : displayName}</FormHelperText>
           </FormControl>
         )
       }

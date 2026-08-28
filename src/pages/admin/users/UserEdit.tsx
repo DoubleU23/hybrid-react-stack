@@ -1,11 +1,12 @@
-import * as React from 'react'
-import { useParams, useNavigate } from 'react-router'
-import { Box, CircularProgress, Alert } from '@mui/material'
-import PageContainer from '../../../components/mui/PageContainer'
-import UserForm, { type UserValues } from './UserForm'
-import useNotifications from '../../../hooks/useNotifications/useNotifications'
-import { useMutation, useQuery } from 'convex/react'
 import { api } from '@convex/api'
+import { Alert, Box, CircularProgress } from '@mui/material'
+import { useMutation, useQuery } from 'convex/react'
+import * as React from 'react'
+import { useNavigate, useParams } from 'react-router'
+import PageContainer from '../../../components/mui/PageContainer'
+import useNotifications from '../../../hooks/useNotifications/useNotifications'
+import type {UserValues} from './UserForm'
+import UserForm from './UserForm'
 
 // 1. Die Edit-Wrapper-Komponente kümmert sich NUR noch um Notifications und Redirects
 function UserEditForm({
@@ -19,27 +20,30 @@ function UserEditForm({
   const navigate = useNavigate()
   const notifications = useNotifications()
 
-  const handleFormSubmit = React.useCallback(async (formValues: UserValues) => {
-    try {
-      await onSubmit(formValues)
-      notifications.show('User successfully edited.', {
-        severity: 'success',
-        autoHideDuration: 3000,
-      })
-      navigate('/admin/users')
-    } catch (editError) {
-      notifications.show(`Failed to edit User. Reason: ${(editError as Error).message}`, {
-        severity: 'error',
-        autoHideDuration: 3000,
-      })
-    }
-  }, [navigate, notifications, onSubmit])
+  const handleFormSubmit = React.useCallback(
+    async (formValues: UserValues) => {
+      try {
+        await onSubmit(formValues)
+        notifications.show('User successfully edited.', {
+          severity: 'success',
+          autoHideDuration: 3000,
+        })
+        navigate('/admin/users')
+      } catch (editError) {
+        notifications.show(`Failed to edit User. Reason: ${(editError as Error).message}`, {
+          severity: 'error',
+          autoHideDuration: 3000,
+        })
+      }
+    },
+    [navigate, notifications, onSubmit],
+  )
 
   return (
     <UserForm
       initialValues={initialValues}
       onSubmit={handleFormSubmit}
-      submitButtonLabel="Save"
+      submitButtonLabel='Save'
       backButtonPath={`/admin/user/${userId}`}
     />
   )
@@ -58,12 +62,15 @@ export default function EmployeeEdit() {
         user: formValues as any,
       })
     },
-    [userId, updateUser]
+    [userId, updateUser],
   )
 
   if (user === undefined) {
     return (
-      <PageContainer title="Loading User..." breadcrumbs={[{ title: 'Users', path: '/admin/users' }, { title: 'Edit' }]}>
+      <PageContainer
+        title='Loading User...'
+        breadcrumbs={[{ title: 'Users', path: '/admin/users' }, { title: 'Edit' }]}
+      >
         <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', m: 1 }}>
           <CircularProgress />
         </Box>
@@ -73,9 +80,9 @@ export default function EmployeeEdit() {
 
   if (user === null || user.length === 0) {
     return (
-      <PageContainer title="User Not Found" breadcrumbs={[{ title: 'Users', path: '/admin/users' }, { title: 'Edit' }]}>
+      <PageContainer title='User Not Found' breadcrumbs={[{ title: 'Users', path: '/admin/users' }, { title: 'Edit' }]}>
         <Box sx={{ flexGrow: 1, p: 2 }}>
-          <Alert severity="error">Could not find user with the provided ID.</Alert>
+          <Alert severity='error'>Could not find user with the provided ID.</Alert>
         </Box>
       </PageContainer>
     )

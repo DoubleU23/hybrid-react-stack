@@ -1,22 +1,19 @@
+import { useAuth } from '@clerk/react'
+import { api } from '@convex/api'
+import { Box, CircularProgress } from '@mui/material'
+import { useMutation, useQuery } from 'convex/react'
 import * as React from 'react'
 import { useNavigate } from 'react-router'
-import { Box } from '@mui/material'
-import { useMutation } from 'convex/react'
-import { api } from '@convex/api'
-
 import PageContainer from 'src/components/mui/PageContainer'
 import useNotifications from 'src/hooks/useNotifications/useNotifications'
-import ArticleForm, { type ArticleObject } from './ArticleForm'
-import { useAuth } from '@clerk/react'
-import { useQuery } from 'convex/react'
-import {CircularProgress} from '@mui/material'
-
+import type { ArticleObject } from './ArticleForm'
+import ArticleForm from './ArticleForm'
 
 export default function ArticleCreate() {
   const navigate = useNavigate()
   const notifications = useNotifications()
-  const {userId} = useAuth()
-  const user = useQuery(api.users.getUserByClerkUserId, {clerk_user_id: userId})
+  const { userId } = useAuth()
+  const user = useQuery(api.users.getUserByClerkUserId, { clerk_user_id: userId })
   const createArticle = useMutation(api.articles.createArticle)
 
   const handleSubmit = React.useCallback(
@@ -40,42 +37,38 @@ export default function ArticleCreate() {
         })
       }
     },
-    [createArticle, navigate, notifications]
+    [createArticle, navigate, notifications],
   )
 
-
-  if(!user)
+  if (!user)
     return (
-      <PageContainer title="Loading Articles..." breadcrumbs={[{ title: 'Users', path: '/admin/users' }]}>
+      <PageContainer title='Loading Articles...' breadcrumbs={[{ title: 'Users', path: '/admin/users' }]}>
         <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', m: 1 }}>
           <CircularProgress />
         </Box>
       </PageContainer>
-  )
+    )
 
-const initialArticleValues: ArticleObject = {
-  title: '',
-  subtitle: '',
-  author: user.username,
-  created_at: Date.now(),
-  text: '',
-  img_url: null,
-} as any
+  const initialArticleValues: ArticleObject = {
+    title: '',
+    subtitle: '',
+    author: user.username,
+    created_at: Date.now(),
+    text: '',
+    img_url: null,
+  } as any
 
   return (
     <PageContainer
-      title="Create New Article"
-      breadcrumbs={[
-        { title: 'Articles', path: '/admin/articles' },
-        { title: 'Create' },
-      ]}
+      title='Create New Article'
+      breadcrumbs={[{ title: 'Articles', path: '/admin/articles' }, { title: 'Create' }]}
     >
       <Box sx={{ display: 'flex', flex: 1, p: 2 }}>
         <ArticleForm
           initialValues={initialArticleValues}
           onSubmit={handleSubmit}
-          submitButtonLabel="Create Article"
-          backButtonPath="/admin/articles"
+          submitButtonLabel='Create Article'
+          backButtonPath='/admin/articles'
         />
       </Box>
     </PageContainer>
