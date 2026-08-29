@@ -57,7 +57,7 @@ export default function PageContainer(props: PageContainerProps) {
         display: 'flex',
         flexDirection: 'column', // minHeight: '100vh',
         '& > div': {
-          pb: '10 0px',
+          pb: '80px',
         },
       }}
     >
