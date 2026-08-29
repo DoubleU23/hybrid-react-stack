@@ -24,24 +24,16 @@ import dayjs from 'dayjs'
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import PageContainer from 'src/components/mui/PageContainer'
+
+
 export default function ArticleShow(params: any) {
   const navigate = useNavigate()
   const { articleId } = useParams()
   const article = useQuery(api.articles.getArticleById, { articleId })
+  const [dialogOpen, setDialogOpen] = useState(false)
   console.log('article :>> ', article)
 
-  const handleBack = () => {
-    navigate('/admin/articles')
-  }
-  const handleUserEdit = () => {
-    navigate(`/articles/${articleId}/edit`)
-  }
 
-  const handleImgPreview = () => {
-    setDialogOpen(!dialogOpen)
-  }
-
-  const [dialogOpen, setDialogOpen] = useState(false)
 
   if (article === undefined) {
     return (
@@ -49,6 +41,18 @@ export default function ArticleShow(params: any) {
         <CircularProgress />
       </PageContainer>
     )
+  }
+
+
+  const handleBack = () => {
+    navigate('/admin/articles')
+  }
+  const handleUserEdit = () => {
+    navigate(`/admin/articles/${articleId}/edit`)
+  }
+
+  const handleImgPreview = () => {
+    setDialogOpen(!dialogOpen)
   }
 
   const ImageButton = styled(ButtonBase)(({ theme }) => ({

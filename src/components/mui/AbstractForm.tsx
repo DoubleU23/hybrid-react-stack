@@ -48,15 +48,15 @@ import MuiTypographyClass from './MuiTipTapTypographyClass'
 
 const ThemeBoundEditorWrapper = styled('div')(({ theme }) => ({
   width: '100%',
-  '& .tiptap.ProseMirror': {  
-    '& .MuiTypography-h3': {
-      ...theme.typography.h3,
+  '& .tiptap.ProseMirror': {
+    '& .MuiTypography-h4, & h4': {
+      ...theme.typography.h4, margin: '14px 0'
     },
-    '& .MuiTypography-h4': {
-      ...theme.typography.h4,
+    '& .MuiTypography-h5, , & h5': {
+      ...theme.typography.h5, margin: '12px 0'
     },
-    '& .MuiTypography-h5': {
-      ...theme.typography.h5,
+    '& .MuiTypography-h6, & h6': {
+      ...theme.typography.h6, margin: '12px 0'
     },
     '& .MuiTypography-subtitle1': {
       ...theme.typography.subtitle1,
@@ -65,7 +65,7 @@ const ThemeBoundEditorWrapper = styled('div')(({ theme }) => ({
       ...theme.typography.subtitle2,
     },
     '& .MuiTypography-button': {
-      ...theme.typography.button
+      ...theme.typography.button,
     },
     '& .MuiTypography-caption': {
       ...theme.typography.caption,
@@ -187,7 +187,9 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
             {...field.addProps}
           />
         )
-      case 'textarea':
+      case 'textarea': {
+        const isEditorReady = !!rteRef.current?.editor
+
         return (
           <ThemeBoundEditorWrapper>
             <RichTextEditor
@@ -198,7 +200,7 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
                 LinkBubbleMenuHandler,
                 TextStyleKit,
                 MuiTypographyClass,
-                HeadingExtension.configure({ levels: [3, 4, 5, 6] }),
+                HeadingExtension.configure({ levels: [4, 5, 6] }),
               ]}
               content={value ?? ''}
               onUpdate={({ editor }) => {
@@ -255,15 +257,18 @@ export default function AbstractForm<T extends Record<string, any>>(props: Abstr
                 )
               }}
             >
-              {() => (
-                <>
-                  <LinkBubbleMenu />
-                  <TableBubbleMenu />
-                </>
-              )}
+              {() =>
+                isEditorReady && (
+                  <>
+                    <LinkBubbleMenu />
+                    <TableBubbleMenu />
+                  </>
+                )
+              }
             </RichTextEditor>
           </ThemeBoundEditorWrapper>
         )
+      }
       case 'checkbox':
         return (
           <FormControl component='fieldset'>

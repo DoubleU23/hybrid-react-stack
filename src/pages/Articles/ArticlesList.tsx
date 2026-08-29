@@ -16,10 +16,6 @@ import { useNavigate } from 'react-router'
 import type { ArticleObject } from '../../../convex/schema'
 import PageContainer from '../../components/mui/PageContainer'
 
-interface ArticleDbQuery extends ArticleObject {
-  _id: string
-}
-
 export default function ArticleList(params: object) {
   const naigate = useNavigate()
   const articles = useQuery(api.articles.getArticles)
@@ -51,7 +47,7 @@ export default function ArticleList(params: object) {
       breadcrumbs={[{ title: 'Home', path: '/' }]}
     >
       <Grid container spacing={3} sx={{ width: '100%' }}>
-        {articles.map(({ title, subtitle, author, img_url, text, _id }: ArticleDbQuery, index: number) => {
+        {articles.map(({ title, subtitle, author, img_url, text, _id }: ArticleObject, index: number) => {
           return (
             <Grid size={{ xs: 12, md: 6, lg: 4 }} sx={{}} key={_id}>
               <Card
@@ -60,7 +56,7 @@ export default function ArticleList(params: object) {
                   display: 'flex',
                   flexDirection: 'column',
                 }}
-                onClick={() => showArticle(_id)}
+                onClick={() => showArticle(_id || '')}  
               >
                 <CardActionArea
                   sx={{
@@ -90,7 +86,7 @@ export default function ArticleList(params: object) {
                   </CardContent>
                 </CardActionArea>
                 <CardActions sx={{ position: 'relative', bottom: 0 }}>
-                  <Button size='small' color='primary' onClick={() => showArticle(_id)}>
+                  <Button size='small' color='primary' onClick={() => showArticle(_id || '')}>
                     Read Article
                   </Button>
                 </CardActions>

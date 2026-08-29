@@ -101,6 +101,7 @@ export default function ArticleForm({ initialValues, onSubmit, submitButtonLabel
         Record<keyof ArticleFormValues, string>
       >
 
+      console.log('issues :>> ', issues);
       setFormState(prev => ({ ...prev, errors: nextErrors }))
       return
     }
@@ -109,6 +110,7 @@ export default function ArticleForm({ initialValues, onSubmit, submitButtonLabel
 
     try {
       let finalImgUrl: string | null = typeof currentValues.img_url === 'string' ? currentValues.img_url : null
+
 
       if (currentValues.img_url instanceof FileList || currentValues.img_url instanceof File) {
         const targetFile = currentValues.img_url instanceof FileList ? currentValues.img_url[0] : currentValues.img_url
@@ -129,7 +131,9 @@ export default function ArticleForm({ initialValues, onSubmit, submitButtonLabel
           const { storageId } = await result.json()
           finalImgUrl = storageId
         }
+
       }
+      console.log('finalImgUrl :>> ', finalImgUrl);
 
       const finalizedPayload: ArticleObject = {
         ...currentValues,

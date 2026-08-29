@@ -68,3 +68,11 @@ export const createArticle = mutation({
     return await ctx.db.insert("articles", args.article);
   },
 });
+
+
+export const updateArticle = mutation({
+  args: { _id: v.id('articles'), article: articleValidator },
+  handler: async (ctx, args) => {
+    return await ctx.db.patch("articles", args._id, args.article);
+  },
+});

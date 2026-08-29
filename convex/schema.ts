@@ -10,7 +10,7 @@ export const emailAddressesValidator = v.array(
     object: v.string(),
     email_address: v.string(),
     reserved: v.boolean(),
-    matches_sso_connection: v.boolean(), 
+    matches_sso_connection: v.boolean(),
     created_at: v.number(),
     updated_at: v.number(),
   }),
@@ -43,6 +43,7 @@ export const userValidator = v.object({
 export type UserObject = Infer<typeof userValidator>
 
 export const articleValidator = v.object({
+  _id: v.optional(v.id('articles')),
   title: v.string(),
   subtitle: v.string(),
   text: v.string(), // Textareas use regular string types in Convex
@@ -52,6 +53,8 @@ export const articleValidator = v.object({
 })
 
 export type ArticleObject = Infer<typeof articleValidator>
+
+
 
 export default defineSchema({
   tasks: defineTable({

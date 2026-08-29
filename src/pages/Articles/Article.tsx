@@ -19,10 +19,6 @@ import ImageBox from 'src/components/mui/ImageBox'
 import PageContainer from 'src/components/mui/PageContainer'
 import type { ArticleObject } from '../../../convex/schema'
 
-interface ArticleDbQuery extends ArticleObject {
-  _id: string
-}
-
 export default function ArticleList(params: object) {
   const naigate = useNavigate()
   const { articleId } = useParams()
