@@ -11,15 +11,28 @@ import Profile from './pages/Auth/Profile'
 import RegisterPage from './pages/Auth/Register'
 // admin pages'
 import AdminHome from './pages/admin/AdminHome'
-import AdminArticleShow from './pages/admin/articles/ArticleShow'
 import AdminArticleCreate from './pages/admin/articles/ArticlesCreate'
+import AdminArticleEdit from './pages/admin/articles/ArticlesEdit'
 import AdminArticlesList from './pages/admin/articles/ArticlesList'
+import AdminArticleShow from './pages/admin/articles/ArticlesShow'
 import UserEdit from './pages/admin/users/UserEdit'
 import UserList from './pages/admin/users/UserList'
 import UserShow from './pages/admin/users/UserShow'
 import Home from './pages/Home/Home'
 import Impressum from './pages/Impressum/Impressum'
 import NotFound from './pages/NotFound/NotFound'
+
+
+const appPages = [
+   { name: 'Home', path: '/', index: true, Component: Home, showInNav: true },
+    { name: 'Impressum', path: '/impressum', index: true, Component: Impressum, showInNav: false },
+    { name: 'Articles', path: '/articles', index: true, Component: ArticleList, showInNav: true },
+    { name: 'Article', path: '/articles/:articleId', index: true, Component: Article, showInNav: false },
+    { name: 'Login', path: '/login', Component: LoginPage, showInNav: false },
+    { name: 'Register', path: '/register', Component: RegisterPage, showInNav: false },
+    { name: 'profile', path: '/profile', Component: Profile, showInNav: false },
+    { name: 'NotFound', path: '/*', Component: NotFound, showInNav: true },
+]
 
 const AppRoutes = [
   {
@@ -28,16 +41,7 @@ const AppRoutes = [
       {
         path: '/',
         Component: App,
-        children: [
-          { name: 'Home', path: '/', index: true, Component: Home, showInNav: true },
-          { name: 'Impressum', path: '/impressum', index: true, Component: Impressum, showInNav: false  },
-          { name: 'Articles', path: '/articles', index: true, Component: ArticleList, showInNav: true },
-          { name: 'Article', path: '/articles/:articleId', index: true, Component: Article, showInNav: false },
-          { name: 'Login', path: '/login', Component: LoginPage, showInNav: false },
-          { name: 'Register', path: '/register', Component: RegisterPage, showInNav: false },
-          { name: 'profile', path: '/profile', Component: Profile, showInNav: false },
-          { name: 'NotFound', path: '/*', Component: NotFound, showInNav: true },
-        ],
+        children: appPages,
       },
       {
         path: '/admin',
@@ -53,6 +57,7 @@ const AppRoutes = [
           { path: '/admin/articles', Component: AdminArticlesList, showInNav: true },
           { path: '/admin/articles/:articleId/show', Component: AdminArticleShow, showInNav: true },
           { path: '/admin/articles/create', Component: AdminArticleCreate, showInNav: true },
+          { path: '/admin/articles/:articleId/edit', Component: AdminArticleEdit, showInNav: true },
           // { path: '/admin/articles/:articleId/edit', Component: ArticleEdit },
           // { path: '/admin/*', Component: AdminHome },
         ],
