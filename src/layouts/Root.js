@@ -4,17 +4,31 @@ import './Root.css'
 // In Core 3 importieren wir alles aus '@clerk/react'
 import { ClerkProvider, useAuth } from '@clerk/react'
 import { dark } from '@clerk/ui/themes'
-import { ThemeProvider } from '@mui/material/styles'
+// import { ThemeProvider } from '@mui/material/styles'
+
 import { ConvexReactClient } from 'convex/react'
 import { ConvexProviderWithClerk } from 'convex/react-clerk'
 import { useNavigate } from 'react-router-dom'
-import muiTheme from './theme/muiTheme'
-import AdminTheme from './theme/admin/AdminTheme'
+import AdminTheme from './theme/MuiTheme'
+import MuiTheme from './theme/MuiTheme'
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 import CssBaseline from '@mui/material/CssBaseline'
+import {
+  dataGridCustomizations,
+  datePickersCustomizations,
+  formInputCustomizations,
+  sidebarCustomizations,
+} from '../components/mui'
+
+const themeComponents = {
+  ...dataGridCustomizations,
+  ...datePickersCustomizations,
+  ...sidebarCustomizations,
+  ...formInputCustomizations,
+}
 
 const CLERK_KEY = process.env.PUBLIC_CLERK_PUBLISHABLE_KEY
 
@@ -33,7 +47,6 @@ function Root() {
 
   return (
     <div id='root-wrapper'>
-
       <ClerkProvider
         appearance={{
           baseTheme: dark,
@@ -44,10 +57,10 @@ function Root() {
         routerReplace={to => navigate(to, { replace: true })}
       >
         <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
-          <ThemeProvider theme={muiTheme}>
-        <CssBaseline enableColorScheme />
-          <Outlet />
-          </ThemeProvider>
+          <MuiTheme themeComponents={themeComponents}>
+            <CssBaseline enableColorScheme />
+            <Outlet />
+          </MuiTheme>
         </ConvexProviderWithClerk>
       </ClerkProvider>
     </div>

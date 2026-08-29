@@ -7,7 +7,7 @@ import type { SvgIconProps } from '@mui/material/SvgIcon'
 import { alpha, type Components, type Theme } from '@mui/material/styles'
 import { tabClasses } from '@mui/material/Tab'
 import * as React from 'react'
-import { brand, gray } from '../../themePrimitives'
+import { brand, gray } from '../themePrimitives'
 
 export const navigationCustomizations: Components<Theme> = {
   MuiMenuItem: {

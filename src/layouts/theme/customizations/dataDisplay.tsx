@@ -4,7 +4,7 @@ import { iconButtonClasses } from '@mui/material/IconButton'
 import { svgIconClasses } from '@mui/material/SvgIcon'
 import { alpha, type Components, type Theme } from '@mui/material/styles'
 import { typographyClasses } from '@mui/material/Typography'
-import { gray, green, red } from '../../themePrimitives'
+import { gray, green, red } from '../themePrimitives'
 
 export const dataDisplayCustomizations: Components<Theme> = {
   MuiList: {

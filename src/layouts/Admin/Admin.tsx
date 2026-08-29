@@ -7,7 +7,7 @@ import Toolbar from '@mui/material/Toolbar'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { useConvexAuth, useQuery } from 'convex/react'
 import * as React from 'react'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router'
 import DashboardHeader from '../../components/admin/DashboardHeader'
 import DashboardSidebar from '../../components/admin/DashboardSidebar'
@@ -18,9 +18,10 @@ import {
   formInputCustomizations,
   sidebarCustomizations,
 } from '../../components/mui'
+import MuiTypoClassesWrapper from '../../components/mui/MuiTypoClassesWrapper'
 import DialogsProvider from '../../hooks/useDialogs/DialogsProvider'
 import NotificationsProvider from '../../hooks/useNotifications/NotificationsProvider'
-import AppTheme from '../theme/admin/AdminTheme'
+import MuiTheme from '../theme/MuiTheme'
 
 const themeComponents = {
   ...dataGridCustomizations,
@@ -38,7 +39,7 @@ export default function Admin(props: any) {
   console.log('user :>> ', user)
 
   // 2. Safely trigger redirect when loading finishes and auth is missing
-/*   useEffect(() => {
+  /*   useEffect(() => {
     if (!authState.isLoading && !authState.isAuthenticated) {
       navigate('/')
     }
@@ -53,7 +54,7 @@ export default function Admin(props: any) {
 
   const isNavigationExpanded = isOverMdViewport ? isDesktopNavigationExpanded : isMobileNavigationExpanded
 
-  const setIsNavigationExpanded = React.useCallback(
+  const setIsNavigationExpanded = useCallback(
     (newExpanded: boolean) => {
       if (isOverMdViewport) {
         setIsDesktopNavigationExpanded(newExpanded)
@@ -76,7 +77,7 @@ export default function Admin(props: any) {
   //  const boxPosition = pathname !== '/admin' ? "'position: 'relative'" : ""
   // CHECK ADMIN ROLE
 
-  console.log('authState :>> ', authState);
+  console.log('authState :>> ', authState)
   const renderOutletIfAdmin = () => {
     if (authState.isLoading || (authState.isAuthenticated && user === undefined)) {
       return (
@@ -102,7 +103,6 @@ export default function Admin(props: any) {
   }
 
   return (
-    <AppTheme themeComponents={themeComponents}>
       <NotificationsProvider>
         <DialogsProvider>
           <Box
@@ -151,6 +151,5 @@ export default function Admin(props: any) {
           </Box>
         </DialogsProvider>
       </NotificationsProvider>
-    </AppTheme>
   )
 }
